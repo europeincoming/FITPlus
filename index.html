@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>City Breaks Packages</title>
+    <title>Europe Incoming FIT Packages - Asia</title>
     <style>
         * {
             margin: 0;
@@ -49,54 +49,53 @@
             opacity: 0.8;
         }
         
-.header-right {
-    display: flex;
-    align-items: center;
-    gap: 32px;
-    flex: 1;
-    justify-content: flex-end;
-}
-
-.site-title-group {
-    text-align: center;
-}
-
-.site-title-main {
-    font-size: 1.25em;
-    font-weight: 600;
-    color: #212121;
-    line-height: 1.3;
-}
-
-.site-title-sub {
-    font-size: 1em;
-    font-weight: 400;
-    color: #757575;
-}
-
-.contact-info {
-    text-align: right;
-    padding-left: 28px;
-    border-left: 1px solid #e0e0e0;
-}
-
-.contact-prompt {
-    font-size: 0.85em;
-    color: #616161;
-    margin-bottom: 4px;
-    display: inline;
-}
-
-.contact-email {
-    font-size: 0.9em;
-    color: #2196F3;
-    text-decoration: none;
-    font-weight: 500;
-}
-
-.contact-email:hover {
-    text-decoration: underline;
-}
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            flex: 1;
+            justify-content: flex-end;
+        }
+        
+        .site-title-group {
+            text-align: right;
+        }
+        
+        .site-title-main {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #212121;
+            line-height: 1.3;
+        }
+        
+        .site-title-sub {
+            font-size: 0.9em;
+            font-weight: 400;
+            color: #757575;
+        }
+        
+        .contact-info {
+            text-align: right;
+            padding-left: 32px;
+            border-left: 1px solid #e0e0e0;
+        }
+        
+        .contact-prompt {
+            font-size: 0.85em;
+            color: #757575;
+            margin-bottom: 4px;
+        }
+        
+        .contact-email {
+            font-size: 0.9em;
+            color: #2196F3;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .contact-email:hover {
+            text-decoration: underline;
+        }
         
         .search-box {
             width: 100%;
@@ -116,49 +115,44 @@
             box-shadow: 0 2px 8px rgba(33,150,243,0.15);
         }
         
-        /* Breadcrumb */
-        .breadcrumb {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 24px 24px 0;
-            font-size: 0.9em;
-            color: #757575;
-        }
-        
-        .breadcrumb a {
-            color: #2196F3;
-            text-decoration: none;
-        }
-        
-        .breadcrumb a:hover {
-            text-decoration: underline;
-        }
-        
         /* Main Content */
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 32px 24px 48px;
+            padding: 48px 24px;
+        }
+        
+        .hero {
+            text-align: center;
+            margin-bottom: 56px;
         }
         
         h1 {
-            font-size: 2.2em;
+            font-size: 2.75em;
             font-weight: 600;
             color: #212121;
-            margin-bottom: 40px;
+            margin-bottom: 16px;
             letter-spacing: -0.5px;
         }
         
-        /* Brochure Cards */
-        .brochures {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
+        .subtitle {
+            font-size: 1.2em;
+            color: #757575;
+            font-weight: 400;
         }
         
-        .brochure-card {
+        /* Category Cards */
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+            gap: 24px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .category-card {
             background: white;
-            padding: 28px;
+            padding: 40px;
             border-radius: 12px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.08);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -168,31 +162,50 @@
             border: 1px solid #f5f5f5;
         }
         
-        .brochure-card:hover {
+        .category-card:hover {
             transform: translateY(-4px);
             box-shadow: 0 8px 24px rgba(0,0,0,0.12);
             border-color: #e0e0e0;
         }
         
-        .brochure-card h3 {
-            font-size: 1.15em;
+        .category-card h2 {
+            font-size: 1.6em;
             color: #212121;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
             font-weight: 600;
         }
         
-        .pdf-icon {
-            color: #d32f2f;
-            font-size: 0.85em;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+        .category-card p {
+            color: #757575;
+            font-size: 1em;
+            line-height: 1.6;
+        }
+        
+        .arrow {
+            float: right;
+            color: #2196F3;
+            font-size: 1.6em;
+            transition: transform 0.2s;
+        }
+        
+        .category-card:hover .arrow {
+            transform: translateX(4px);
+        }
+        
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 80px;
+            padding: 32px 0;
+            color: #9e9e9e;
+            font-size: 0.9em;
+            border-top: 1px solid #f0f0f0;
         }
         
         /* Responsive */
         @media (max-width: 768px) {
             body {
-                padding-top: 140px;
+                padding-top: 180px;
             }
             
             .nav-container {
@@ -200,38 +213,42 @@
                 gap: 16px;
             }
             
-.header-right {
-    width: 100%;
-    flex-direction: column;
-    align-items: center;
-    order: 3;
-    gap: 16px;
-}
-
-.site-title-group {
-    text-align: center;
-}
-
-.contact-info {
-    text-align: center;
-    border-left: none;
-    border-top: 1px solid #e0e0e0;
-    padding-left: 0;
-    padding-top: 16px;
-}
+            .header-right {
+                width: 100%;
+                flex-direction: column;
+                align-items: center;
+                order: 3;
+                gap: 16px;
+            }
+            
+            .site-title-group {
+                text-align: center;
+            }
+            
+            .contact-info {
+                text-align: center;
+                border-left: none;
+                border-top: 1px solid #e0e0e0;
+                padding-left: 0;
+                padding-top: 16px;
+            }
             
             .search-box {
                 max-width: 100%;
             }
             
-            .brochures {
+            .categories {
                 grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2em;
             }
         }
     </style>
 </head>
 <body>
-   <!-- Geo-blocking Script - Only allows access from specific Asian markets -->
+    <!-- Geo-blocking Script - Only allows access from specific Asian markets -->
 <script>
 (async function() {
     try {
@@ -240,7 +257,6 @@
         
         // Only allow these countries
 const allowedCountries = ['IN', 'AE', 'QA', 'OM', 'SA', 'KW', 'LK', 'BD', 'PH', 'ID', 'TW', 'KR'];
-
         
         if (!allowedCountries.includes(data.country)) {
             document.body.innerHTML = `
@@ -274,219 +290,48 @@ const allowedCountries = ['IN', 'AE', 'QA', 'OM', 'SA', 'KW', 'LK', 'BD', 'PH', 
     <!-- Fixed Top Navigation -->
     <nav class="top-nav">
         <div class="nav-container">
-            <a href="../">
-                <img src="../logo.png" alt="Europe Incoming" class="logo">
+            <a href="./">
+                <img src="logo.png" alt="Europe Incoming" class="logo">
             </a>
             <input type="text" class="search-box" placeholder="Search packages..." id="searchBox">
-<div class="header-right">
-    <div class="site-title-group">
-        <div class="site-title-main">Europe Incoming</div>
-        <div class="site-title-sub">FIT Packages - Asia</div>
-    </div>
-    <div class="contact-info">
-        <div class="contact-prompt">Can't find what you're looking for? Email us at: </div>
-        <a href="mailto:fitsales@europeincoming.com" class="contact-email">fitsales@europeincoming.com</a>
-    </div>
-</div>        </div>
+            <div class="header-right">
+                <div class="site-title-group">
+                    <div class="site-title-main">Europe Incoming</div>
+                    <div class="site-title-sub">FIT Packages - Asia</div>
+                </div>
+<div class="contact-info">
+    <div class="contact-prompt">Can't find what you're looking for? Email us at:</div>
+    <a href="mailto:fitsales@europeincoming.com" class="contact-email">fitsales@europeincoming.com</a>
+</div>
+            </div>
+        </div>
     </nav>
-    
-    <!-- Breadcrumb -->
-    <div class="breadcrumb">
-        <a href="../">Home</a> > City Breaks
-    </div>
     
     <!-- Main Content -->
     <div class="container">
-        <h1>City Breaks Packages</h1>
-        
-        <div class="brochures" id="brochuresList">
-            <a href="3 Days_Amsterdam_2025-26_Europe Incoming.pdf" class="brochure-card" target="_blank">
-        <h3>3 Days Amsterdam</h3>
-        <span class="pdf-icon">PDF</span>
-    </a>
-    
-    <a href="3 Days_Athens_2025-26_Europe Incoming.pdf" class="brochure-card" target="_blank">
-        <h3>3 Days Athens</h3>
-        <span class="pdf-icon">PDF</span>
-    </a>
-    
-    <a href="3 Days_Barcelona_2025-26_Europe Incoming.pdf" class="brochure-card" target="_blank">
-        <h3>3 Days Barcelona</h3>
-        <span class="pdf-icon">PDF</span>
-    </a>
-    
-    <a href="3 Days_Bergen_2025-26_Europe Incoming.pdf" class="brochure-card" target="_blank">
-        <h3>3 Days Bergen</h3>
-        <span class="pdf-icon">PDF</span>
-    </a>
-    
-    <a href="3 Days_Berlin_2025-26_Europe Incoming.pdf" class="brochure-card" target="_blank">
-        <h3>3 Days Berlin</h3>
-        <span class="pdf-icon">PDF</span>
-    </a>
-    
-    <a href="3 Days_Brussels_2025-26_Europe Incoming.pdf" class="brochure-card" target="_blank">
-        <h3>3 Days Brussels</h3>
-        <span class="pdf-icon">PDF</span>
-    </a>
-    
-    <a href="3 Days_Budapest_2025-26_Europe Incoming.pdf" class="brochure-card" target="_blank">
-        <h3>3 Days Budapest</h3>
-        <span class="pdf-icon">PDF</span>
-    </a>
-    
-    <a href="3 Days_Copenhagen_2025-26_Europe Incoming.pdf" class="brochure-card" target="_blank">
-        <h3>3 Days Copenhagen</h3>
-        <span class="pdf-icon">PDF</span>
-    </a>
-    
-    <a href="3 Days_Dublin_2025-26_Europe Incoming.pdf" class="brochure-card" target="_blank">
-        <h3>3 Days Dublin</h3>
-        <span class="pdf-icon">PDF</span>
-    </a>
-    
-    <a href="3 Days_Dusseldorf_2025-26_Europe Incoming.pdf" class="brochure-card" target="_blank">
-        <h3>3 Days Dusseldorf</h3>
-        <span class="pdf-icon">PDF</span>
-    </a>
-    
-    <a href="3 Days_Edinburgh_2025-26_Europe Incoming.pdf" class="brochure-card" target="_blank">
-        <h3>3 Days Edinburgh</h3>
-        <span class="pdf-icon">PDF</span>
-    </a>
-    
-    <a href="3 Days_Florence_2025-26_Europe Incoming.pdf" class="brochure-card" target="_blank">
-        <h3>3 Days Florence</h3>
-        <span class="pdf-icon">PDF</span>
-    </a>
-    
-    <a href="3 Days_Frankfurt_2025-26_Europe Incoming.pdf" class="brochure-card" target="_blank">
-        <h3>3 Days Frankfurt</h3>
-        <span class="pdf-icon">PDF</span>
-    </a>
-    
-    <a href="3 Days_Geneva_2025-26_Europe Incoming.pdf" class="brochure-card" target="_blank">
-        <h3>3 Days Geneva</h3>
-        <span class="pdf-icon">PDF</span>
-    </a>
-    
-    <a href="3 Days_Glasgow_2025-26_Europe Incoming.pdf" class="brochure-card" target="_blank">
-        <h3>3 Days Glasgow</h3>
-        <span class="pdf-icon">PDF</span>
-    </a>
-    
-    <a href="3 Days_Helsinki_2025-26_Europe Incoming.pdf" class="brochure-card" target="_blank">
-        <h3>3 Days Helsinki</h3>
-        <span class="pdf-icon">PDF</span>
-    </a>
-    
-    <a href="3 Days_Innsbruck_2025-26_Europe Incoming.pdf" class="brochure-card" target="_blank">
-        <h3>3 Days Innsbruck</h3>
-        <span class="pdf-icon">PDF</span>
-    </a>
-    
-    <a href="3 Days_Interlaken_2025-26_Europe Incoming.pdf" class="brochure-card" target="_blank">
-        <h3>3 Days Interlaken</h3>
-        <span class="pdf-icon">PDF</span>
-    </a>
-    
-    <a href="3 Days_Inverness_2025-26_Europe Incoming.pdf" class="brochure-card" target="_blank">
-        <h3>3 Days Inverness</h3>
-        <span class="pdf-icon">PDF</span>
-    </a>
-    
-    <a href="3 Days_Lisbon_2025-26_Europe Incoming.pdf" class="brochure-card" target="_blank">
-        <h3>3 Days Lisbon</h3>
-        <span class="pdf-icon">PDF</span>
-    </a>
-    
-    <a href="3 Days_London_2025-26_Europe Incoming.pdf" class="brochure-card" target="_blank">
-        <h3>3 Days London</h3>
-        <span class="pdf-icon">PDF</span>
-    </a>
-    
-    <a href="3 Days_Lucerne_2025-26_Europe Incoming.pdf" class="brochure-card" target="_blank">
-        <h3>3 Days Lucerne</h3>
-        <span class="pdf-icon">PDF</span>
-    </a>
-    
-    <a href="3 Days_Madrid_2025-26_Europe Incoming.pdf" class="brochure-card" target="_blank">
-        <h3>3 Days Madrid</h3>
-        <span class="pdf-icon">PDF</span>
-    </a>
-    
-    <a href="3 Days_Milan_2025-26_Europe Incoming.pdf" class="brochure-card" target="_blank">
-        <h3>3 Days Milan</h3>
-        <span class="pdf-icon">PDF</span>
-    </a>
-    
-    <a href="3 Days_Munich_2025-26_Europe Incoming.pdf" class="brochure-card" target="_blank">
-        <h3>3 Days Munich</h3>
-        <span class="pdf-icon">PDF</span>
-    </a>
-    
-    <a href="3 Days_Mykonos_2025-26_Europe Incoming.pdf" class="brochure-card" target="_blank">
-        <h3>3 Days Mykonos</h3>
-        <span class="pdf-icon">PDF</span>
-    </a>
-    
-    <a href="3 Days_Nice_2025-26_Europe Incoming.pdf" class="brochure-card" target="_blank">
-        <h3>3 Days Nice</h3>
-        <span class="pdf-icon">PDF</span>
-    </a>
-    
-    <a href="3 Days_Oslo_2025-26_Europe Incoming.pdf" class="brochure-card" target="_blank">
-        <h3>3 Days Oslo</h3>
-        <span class="pdf-icon">PDF</span>
-    </a>
-    
-    <a href="3 Days_Paris_2025-26_Europe Incoming.pdf" class="brochure-card" target="_blank">
-        <h3>3 Days Paris</h3>
-        <span class="pdf-icon">PDF</span>
-    </a>
-    
-    <a href="3 Days_Prague_2025-26_Europe Incoming.pdf" class="brochure-card" target="_blank">
-        <h3>3 Days Prague</h3>
-        <span class="pdf-icon">PDF</span>
-    </a>
-    
-    <a href="3 Days_Rome_2024-25_Europe Incoming.pdf" class="brochure-card" target="_blank">
-        <h3>3 Days Rome</h3>
-        <span class="pdf-icon">PDF</span>
-    </a>
-    
-    <a href="3 Days_Salzburg_2025-26_Europe Incoming.pdf" class="brochure-card" target="_blank">
-        <h3>3 Days Salzburg</h3>
-        <span class="pdf-icon">PDF</span>
-    </a>
-    
-    <a href="3 Days_Santorini_2025-26_Europe Incoming.pdf" class="brochure-card" target="_blank">
-        <h3>3 Days Santorini</h3>
-        <span class="pdf-icon">PDF</span>
-    </a>
-    
-    <a href="3 Days_Stockholm_2025-26_Europe Incoming.pdf" class="brochure-card" target="_blank">
-        <h3>3 Days Stockholm</h3>
-        <span class="pdf-icon">PDF</span>
-    </a>
-    
-    <a href="3 Days_Venice_2025-26_Europe Incoming.pdf" class="brochure-card" target="_blank">
-        <h3>3 Days Venice</h3>
-        <span class="pdf-icon">PDF</span>
-    </a>
-    
-    <a href="3 Days_Vienna_2025-26_Europe Incoming.pdf" class="brochure-card" target="_blank">
-        <h3>3 Days Vienna</h3>
-        <span class="pdf-icon">PDF</span>
-    </a>
-    
-    <a href="3 Days_Zurich_2025-26_Europe Incoming.pdf" class="brochure-card" target="_blank">
-        <h3>3 Days Zurich</h3>
-        <span class="pdf-icon">PDF</span>
-    </a>
+        <div class="hero">
+            <h1>Explore European Tour Packages</h1>
+            <p class="subtitle">Curated experiences across Europe</p>
         </div>
+        
+        <div class="categories" id="categoriesList">
+            <a href="city-break/" class="category-card">
+                <span class="arrow">→</span>
+                <h2>City Breaks</h2>
+                <p>Short city getaway packages featuring Europe's most iconic destinations</p>
+            </a>
+            
+            <a href="multi-country/" class="category-card">
+                <span class="arrow">→</span>
+                <h2>Multi-City & Country Packages</h2>
+                <p>Comprehensive tours spanning multiple European cities</p>
+            </a>
+        </div>
+        
+        <footer>
+            <p>All packages are available for download in PDF format</p>
+        </footer>
     </div>
-    
-    <script src="../global-search.js"></script>
+    <script src="./global-search.js"></script>
 </body>
 </html>
