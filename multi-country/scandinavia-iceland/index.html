@@ -184,7 +184,7 @@
         const data = await response.json();
         
         // Only allow these countries
-        const allowedCountries = ['IN', 'AE', 'QA', 'OM', 'SA', 'KW', 'LK', 'BD'];
+const allowedCountries = ['IN', 'AE', 'QA', 'OM', 'SA', 'KW', 'LK', 'BD', 'PH', 'ID', 'TW', 'KR'];
         
         if (!allowedCountries.includes(data.country)) {
             document.body.innerHTML = `
