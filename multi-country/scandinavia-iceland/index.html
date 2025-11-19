@@ -242,7 +242,7 @@
         const data = await response.json();
         
         // Only allow these countries
-const allowedCountries = ['IN', 'AE', 'QA', 'OM', 'SA', 'KW', 'LK', 'BD', 'PH', 'ID', 'TW', 'KR'];
+        const allowedCountries = ['IN', 'AE', 'QA', 'OM', 'SA', 'KW', 'LK', 'BD', 'PH', 'ID', 'TW', 'KR'];
         
         if (!allowedCountries.includes(data.country)) {
             document.body.innerHTML = `
@@ -303,7 +303,35 @@ const allowedCountries = ['IN', 'AE', 'QA', 'OM', 'SA', 'KW', 'LK', 'BD', 'PH', 
         <h1>Scandinavia & Iceland</h1>
         
         <div class="brochures" id="brochuresList">
-            <!-- Your PDF links will go here -->
+            <a href="Iceland_Self-drive 7 nights, 8 days.pdf" class="brochure-card" target="_blank">
+                <h3>Iceland</h3>
+                <span class="pdf-icon">Self-drive</span>
+            </a>
+            
+            <a href="Kiruna_Regular_4 Nights, 5 Days.pdf" class="brochure-card" target="_blank">
+                <h3>Kiruna - 4 Nights, 5 Days</h3>
+                <span class="pdf-icon">Private Transfers, Shared Tours & Trains</span>
+            </a>
+            
+            <a href="Norway Nutshell_Regular 5 nights, 6 days.pdf" class="brochure-card" target="_blank">
+                <h3>Norway Nutshell - 5 nights, 6 days</h3>
+                <span class="pdf-icon">Private Transfers, Shared Tours & Trains</span>
+            </a>
+            
+            <a href="Swedish Lapland_Regular_7 Nights, 8 Days.pdf" class="brochure-card" target="_blank">
+                <h3>Swedish Lapland - 7 Nights, 8 Days</h3>
+                <span class="pdf-icon">Private Transfers, Shared Tours & Trains</span>
+            </a>
+            
+            <a href="Tromso _Regular_4 Nights, 5 Days.pdf" class="brochure-card" target="_blank">
+                <h3>Tromso - 4 Nights, 5 Days</h3>
+                <span class="pdf-icon">Private Transfers, Shared Tours & Trains</span>
+            </a>
+            
+            <a href="Tromso_Regular_7 Nights, 8 Days.pdf" class="brochure-card" target="_blank">
+                <h3>Tromso - 7 Nights, 8 Days</h3>
+                <span class="pdf-icon">Private Transfers, Shared Tours & Trains</span>
+            </a>
         </div>
     </div>
     
