@@ -261,17 +261,17 @@
 </script>
 </head>
 <body>
-    <!-- Geo-blocking Script - Only allows access from specific Asian markets -->
+<!-- Geo-blocking Script - Blocks USA, Canada, Australia, New Zealand -->
 <script>
 (async function() {
     try {
         const response = await fetch('https://api.country.is/');
         const data = await response.json();
         
-        // Only allow these countries
-const allowedCountries = ['IN', 'AE', 'QA', 'BH', 'OM', 'SA', 'KW', 'LK', 'BD', 'PH', 'ID', 'TW', 'KR', 'PT', 'ES', 'IT', 'FR', 'BR', 'AR', 'MX', 'PE', 'CL', 'UY'];
+        // Block these countries
+        const blockedCountries = ['US', 'CA', 'AU', 'NZ'];
         
-        if (!allowedCountries.includes(data.country)) {
+        if (blockedCountries.includes(data.country)) {
             document.body.innerHTML = `
                 <div style="
                     display: flex;
@@ -290,7 +290,7 @@ const allowedCountries = ['IN', 'AE', 'QA', 'BH', 'OM', 'SA', 'KW', 'LK', 'BD', 
                         Service Not Available
                     </h2>
                     <p style="font-size: 18px; color: #757575;">
-                        This site is only available in select regions.
+                        This site is not available in your region.
                     </p>
                 </div>
             `;
