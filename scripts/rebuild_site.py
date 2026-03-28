@@ -128,13 +128,13 @@ footer{text-align:center;margin-top:60px;padding:32px 0;color:#9e9e9e;font-size:
 """
 
 BROCHURE_CSS = """
-.brochures{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;}
+.brochures{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;align-items:stretch;}
 .brochure-card{background:white;border-radius:14px;box-shadow:0 1px 4px rgba(0,0,0,0.07);transition:all 0.3s cubic-bezier(0.4,0,0.2,1);text-decoration:none;color:inherit;display:flex;flex-direction:row;border:1px solid #ebebeb;overflow:hidden;min-height:210px;}
 .brochure-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,0.11);border-color:#d0d0d0;}
 .brochure-card.expired{opacity:0.75;border-color:#ffcc80;}
 .card-info{flex:1;padding:20px 20px 16px;display:flex;flex-direction:column;gap:5px;min-width:0;}
 .card-title{font-size:1.0em;font-weight:700;color:#1a1a1a;line-height:1.3;}
-.tour-type{font-size:0.72em;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:#c62828;}
+.tour-type{font-size:0.72em;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:#1565c0;}
 .card-pills{display:flex;flex-wrap:wrap;gap:5px;margin-top:2px;}
 .pill{font-size:0.71em;font-weight:600;padding:3px 9px;border-radius:20px;}
 .pill-duration{background:#f3f3f3;color:#444;}
@@ -146,7 +146,7 @@ BROCHURE_CSS = """
 .card-description{font-size:0.81em;color:#666;font-style:italic;line-height:1.4;}
 .cities-list{font-size:0.79em;color:#555;}
 .price-tag{font-size:0.88em;color:#2e7d32;font-weight:700;margin-top:auto;padding-top:6px;}
-.pdf-badge{display:inline-block;font-size:0.65em;font-weight:700;color:#d32f2f;border:1.5px solid #d32f2f;padding:1px 6px;border-radius:4px;margin-left:6px;vertical-align:middle;}
+
 .card-map{width:200px;min-width:200px;border-left:1px solid #ebebeb;position:relative;overflow:hidden;}
 .map-inner{width:100%;height:100%;min-height:210px;}
 .leaflet-tooltip.city-tip{background:transparent!important;border:none!important;box-shadow:none!important;font-size:9px;font-weight:700;color:#1a1a2e;white-space:nowrap;padding:0;text-shadow:-1px -1px 0 white,1px -1px 0 white,-1px 1px 0 white,1px 1px 0 white;}
@@ -492,10 +492,24 @@ def generate_description(cities, region, tour_type, season, pdf_path, cached_des
         return _fallback_desc(cities, region, tour_type)
 
 def _fallback_desc(cities, region, tour_type):
-    if not cities: return f"Curated {region} package with handpicked experiences."
-    if len(cities) == 1: return f"The best of {cities[0]}, curated and ready to explore."
-    elif len(cities) == 2: return f"{cities[0]} elegance meets {cities[1]} charm."
-    else: return f"{cities[0]}, {cities[1]} and {len(cities) - 2} more unmissable stops."
+    tt = (tour_type or "").lower()
+    if not cities:
+        if "self" in tt: return f"Self-drive freedom through {region} at your own pace."
+        if "private" in tt: return f"Private guided {region} experience, tailored for your group."
+        return f"Handpicked {region} itinerary with accommodation and transfers."
+    if len(cities) == 1:
+        if "self" in tt: return f"Self-drive city break in {cities[0]} — explore freely."
+        if "private" in tt: return f"Private {cities[0]} experience with dedicated guide and transfers."
+        return f"Two nights in {cities[0]} with sightseeing, canal cruise and transfers."
+    elif len(cities) == 2:
+        if "self" in tt: return f"Self-drive from {cities[0]} to {cities[1]} — roads, views, freedom."
+        if "private" in tt: return f"Private tour: {cities[0]} to {cities[1]} with dedicated transport."
+        return f"From {cities[0]} to {cities[1]} — history, culture and local highlights."
+    else:
+        stops = ', '.join(cities[:-1]) + ' and ' + cities[-1]
+        if "self" in tt: return f"Self-drive through {stops} — your route, your pace."
+        if "private" in tt: return f"Private guided tour through {stops}."
+        return f"Trains, landmarks and local character through {stops}."
 
 
 # ── MAP JS ────────────────────────────────────────────────────────────────────
@@ -516,7 +530,7 @@ def make_map_js(map_id, cities, coords_cache):
   var pad=0.6;
   var bounds=[[Math.min.apply(null,lats)-pad,Math.min.apply(null,lngs)-pad],[Math.max.apply(null,lats)+pad,Math.max.apply(null,lngs)+pad]];
   var map=L.map('{map_id}',{{zoomControl:false,scrollWheelZoom:false,dragging:false,touchZoom:false,doubleClickZoom:false,boxZoom:false,keyboard:false,attributionControl:false}});
-  L.tileLayer('https://{{s}}.tile.openstreetmap.org/{{z}}/{{x}}/{{y}}.png',{{maxZoom:13}}).addTo(map);
+  L.tileLayer('https://{{s}}.basemaps.cartocdn.com/light_all/{{z}}/{{x}}/{{y}}{{r}}.png',{{maxZoom:19,attribution:''}}).addTo(map);
   map.fitBounds(bounds,{{padding:[20,20]}});
   if(pts.length>1){{var ll=pts.map(function(p){{return[p[0],p[1]];}});L.polyline(ll,{{color:'#2196F3',weight:2.5,dashArray:'6,4',opacity:0.85}}).addTo(map);}}
   pts.forEach(function(p,i){{
@@ -564,7 +578,7 @@ def make_brochure_card(pdf_filename, pdf_data, title, description, map_id, coord
 
     return f"""<a href="{pdf_filename}" class="brochure-card{expired_class}" target="_blank">
   <div class="card-info">
-    <div class="card-title">{title} <span class="pdf-badge">PDF</span></div>
+    <div class="card-title">{title}</div>
     {'<div class="tour-type">' + tt + '</div>' if tt else ''}
     <div class="card-pills">{pills}</div>
     {'<div class="card-description">' + description + '</div>' if description else ''}
