@@ -1,13 +1,13 @@
 """
-rebuild_site.py — v9
-Complete rewrite with all fixes:
-- Private tour pricing (Min Pax table)
-- Regular/Self Drive pricing (column-based Twin extraction)
-- 4-digit and 2-digit year date parsing
-- Auto-geocoding via Nominatim
-- Description caching
-- Fixed title join logic
-- Fuzzy city matching
+rebuild_site.py — v10
+Fixes:
+- £ and € both handled (currency auto-detected per PDF)
+- Date parsing handles DD/MM/YYYY and DD.MM.YY and DD.MM.YYYY
+- Title triple-underscore cleaned up correctly
+- Auto-geocoding via Nominatim for unknown cities
+- Description caching — AI only called for new PDFs
+- Private tour Min Pax pricing
+- Regular/Self Drive column-based Twin pricing
 """
 
 import os, re, json, urllib.request, urllib.parse, time
@@ -77,6 +77,14 @@ SEED_COORDS = {
     "Narvik": [68.4385, 17.4279], "Alta": [69.9689, 23.2716], "Rovaniemi": [66.5039, 25.7294],
     "Lofoten": [68.1566, 13.9989], "Flam": [60.8633, 7.1159], "Geiranger": [62.1008, 7.2050],
     "Trondheim": [63.4305, 10.3951],
+    # UK cities commonly in brochures
+    "Cheltenham": [51.8994, -2.0783], "Barnstaple": [51.0803, -4.0588], "Truro": [50.2632, -5.0510],
+    "Plymouth": [50.3755, -4.1427], "Exeter": [50.7184, -3.5339], "Bournemouth": [50.7192, -1.8808],
+    "Bristol": [51.4545, -2.5879], "Cambridge": [52.2053, 0.1218], "Oxford": [51.7520, -1.2577],
+    "Bath": [51.3758, -2.3599], "York": [53.9600, -1.0873], "Cardiff": [51.4816, -3.1791],
+    "Belfast": [54.5973, -5.9301], "Aberdeen": [57.1497, -2.0943], "Stirling": [56.1165, -3.9369],
+    "Perth": [56.3950, -3.4310], "Dundee": [56.4620, -2.9707], "Oban": [56.4153, -5.4714],
+    "Pitlochry": [56.7044, -3.7327], "St Andrews": [56.3398, -2.7967],
 }
 
 COMPOUND_NAMES = {
@@ -241,7 +249,7 @@ def smart_destination(words):
 
 def make_title(filename):
     name = filename.replace('.pdf', '').replace('_', ' ')
-    name = re.sub(r'\s+', ' ', name).strip()
+    name = re.sub(r'\s+', ' ', name).strip()  # collapse all multiple spaces
     m = re.search(r'(\d+)\s*nights?,\s*(\d+)\s*days?\s+(.+)', name, re.IGNORECASE)
     if m:
         duration = f"{m.group(1)} nights, {m.group(2)} days"
@@ -268,7 +276,8 @@ def make_title(filename):
 # ── PDF EXTRACTION ────────────────────────────────────────────────────────────
 
 def parse_date(d):
-    for fmt in ['%d.%m.%Y', '%d.%m.%y']:
+    """Handle DD.MM.YY, DD.MM.YYYY, DD/MM/YYYY, DD/MM/YY"""
+    for fmt in ['%d.%m.%Y', '%d.%m.%y', '%d/%m/%Y', '%d/%m/%y']:
         try:
             return datetime.strptime(d, fmt)
         except:
@@ -287,70 +296,61 @@ def detect_seasons(date_pairs):
                 hs = True
             if sd.month in WINTER or ed.month in WINTER:
                 hw = True
-    if hs and hw:
-        return "all-year"
-    elif hs:
-        return "summer"
-    elif hw:
-        return "winter"
+    if hs and hw: return "all-year"
+    elif hs: return "summer"
+    elif hw: return "winter"
     return "all-year"
 
 def extract_price(txt, lines):
     """
-    Extract the lowest starting price from a PDF.
-    Handles two formats:
-    - Private (Min Pax table): finds lowest price > 500 in the Min Pax section
-    - Regular/Self Drive (Twin column): finds Twin prices using column position
-    Returns int or None.
+    Detect currency (€ or £) and extract lowest starting price.
+    - Private (Min Pax table): lowest price > 500
+    - Regular/Self Drive: Twin column (2nd in Single/Twin/Child groups)
     """
-    # Detect private tour pricing
+    currency = "£" if ("£" in txt and "€" not in txt) else "€"
+    amt_pattern = r'[€£]\s*([\d,]+)'
+
     if re.search(r'Min\s*Pax', txt, re.IGNORECASE):
-        pricing_section = re.search(
+        section = re.search(
             r'Min\s*Pax.*?(?:Sample Hotels|Terms)',
             txt, re.DOTALL | re.IGNORECASE
         )
-        if pricing_section:
-            amounts = re.findall(r'€\s*([\d,]+)', pricing_section.group(0))
-            package_prices = [int(a.replace(',', '')) for a in amounts
-                              if int(a.replace(',', '')) > 500]
-            if package_prices:
-                return min(package_prices)
-        return None
+        if section:
+            amounts = re.findall(amt_pattern, section.group(0))
+            prices = [int(a.replace(',', '')) for a in amounts
+                      if int(a.replace(',', '')) > 500]
+            return (min(prices), currency) if prices else (None, currency)
+        return (None, currency)
 
-    # Regular/Self Drive: column-based Twin extraction
-    # Table format is: Single, Twin/Do, Child — prices repeat in that order
+    # Regular/Self Drive — column-based
     ti = next((i for i, l in enumerate(lines) if 'Twin' in l and 'Do' in l), None)
     if ti:
         ep = []
         for l in lines[ti:ti + 30]:
-            m = re.match(r'€\s*([\d,]+)', l)
+            m = re.match(amt_pattern, l)
             if m:
                 ep.append(int(m.group(1).replace(',', '')))
-        # Twin is 2nd in each group of 3 (Single=0, Twin=1, Child=2)
         twins = ep[1::3] if len(ep) >= 3 else ep[1:2] if len(ep) >= 2 else []
-        if twins:
-            return min(twins)
-    return None
+        return (min(twins), currency) if twins else (None, currency)
+
+    return (None, currency)
 
 def extract_pdf_data(pdf_path, filename):
     r = {
         "duration": None, "tour_type": None, "cities": [],
-        "price_twin": None, "season": "all-year",
+        "price_twin": None, "currency": "€", "season": "all-year",
         "valid_till": None, "is_expired": False, "includes": []
     }
 
-    # From filename
     name = filename.replace('_', ' ')
     dur = re.search(r'(\d+)\s*nights?\s*/?,?\s*(\d+)\s*days?', name, re.IGNORECASE)
     if dur:
         r["duration"] = f"{dur.group(1)} nights / {dur.group(2)} days"
     else:
         d = re.search(r'(\d+)\s*days?', name, re.IGNORECASE)
-        if d:
-            r["duration"] = f"{d.group(1)} days"
+        if d: r["duration"] = f"{d.group(1)} days"
     t = re.search(r'(Self.?[Dd]rive|Private|Regular)', name)
-    if t:
-        r["tour_type"] = t.group(1).replace('-', ' ').title()
+    if t: r["tour_type"] = t.group(1).replace('-', ' ').title()
 
     try:
         doc = fitz.open(pdf_path)
@@ -361,27 +361,28 @@ def extract_pdf_data(pdf_path, filename):
         oc = re.findall(r'Overnight in ([A-Z][a-zA-Z\s]+?)[\.\n,]', txt)
         r["cities"] = list(dict.fromkeys([c.strip() for c in oc]))[:6]
 
-        # Dates — handles DD.MM.YY and DD.MM.YYYY
-        all_dates_raw = re.findall(r'\b(\d{2}\.\d{2}\.\d{2,4})\b', txt)
-        valid_date_objs = []
-        valid_date_strs = []
+        # Dates — handles DD.MM.YY, DD.MM.YYYY, DD/MM/YYYY
+        all_dates_raw = re.findall(r'\b(\d{2}[./]\d{2}[./]\d{2,4})\b', txt)
+        valid_dates = []
         for d in all_dates_raw:
             parsed = parse_date(d)
             if parsed:
-                valid_date_objs.append(parsed)
-                valid_date_strs.append(d)
-        if valid_date_strs:
-            dp = [(valid_date_strs[i], valid_date_strs[i + 1])
-                  for i in range(0, len(valid_date_strs) - 1, 2)]
+                valid_dates.append((d, parsed))
+
+        if valid_dates:
+            strs = [v[0] for v in valid_dates]
+            objs = [v[1] for v in valid_dates]
+            dp = [(strs[i], strs[i + 1]) for i in range(0, len(strs) - 1, 2)]
             if dp:
                 r["season"] = detect_seasons(dp)
-            if valid_date_objs:
-                latest = max(valid_date_objs)
-                r["valid_till"] = latest.strftime("%b %Y")
-                r["is_expired"] = latest < datetime.now()
+            latest = max(objs)
+            r["valid_till"] = latest.strftime("%b %Y")
+            r["is_expired"] = latest < datetime.now()
 
-        # Price
-        r["price_twin"] = extract_price(txt, lines)
+        # Price + currency
+        price, currency = extract_price(txt, lines)
+        r["price_twin"] = price
+        r["currency"] = currency
 
         # Includes
         im = re.search(
@@ -482,14 +483,10 @@ def generate_description(cities, region, tour_type, season, pdf_path, cached_des
         return _fallback_desc(cities, region, tour_type)
 
 def _fallback_desc(cities, region, tour_type):
-    if not cities:
-        return f"Curated {region} package with handpicked experiences."
-    if len(cities) == 1:
-        return f"The best of {cities[0]}, curated and ready to explore."
-    elif len(cities) == 2:
-        return f"{cities[0]} elegance meets {cities[1]} charm."
-    else:
-        return f"{cities[0]}, {cities[1]} and {len(cities) - 2} more unmissable stops."
+    if not cities: return f"Curated {region} package with handpicked experiences."
+    if len(cities) == 1: return f"The best of {cities[0]}, curated and ready to explore."
+    elif len(cities) == 2: return f"{cities[0]} elegance meets {cities[1]} charm."
+    else: return f"{cities[0]}, {cities[1]} and {len(cities) - 2} more unmissable stops."
 
 
 # ── MAP JS ────────────────────────────────────────────────────────────────────
@@ -528,25 +525,20 @@ def make_brochure_card(pdf_filename, pdf_data, title, description, map_id, coord
     dur = pdf_data.get("duration", "")
     cities = pdf_data.get("cities", [])
     price = pdf_data.get("price_twin")
+    currency = pdf_data.get("currency", "€")
     season = pdf_data.get("season", "all-year")
     valid_till = pdf_data.get("valid_till")
     is_expired = pdf_data.get("is_expired", False)
     is_private = tt.lower() == "private" if tt else False
 
     pills = ""
-    if dur:
-        pills += f'<span class="pill pill-duration">🕐 {dur}</span>'
-    if season == "summer":
-        pills += '<span class="pill pill-summer">☀️ Summer</span>'
-    elif season == "winter":
-        pills += '<span class="pill pill-winter">❄️ Winter</span>'
-    else:
-        pills += '<span class="pill pill-allyear">🌍 All Year Round</span>'
+    if dur: pills += f'<span class="pill pill-duration">🕐 {dur}</span>'
+    if season == "summer": pills += '<span class="pill pill-summer">☀️ Summer</span>'
+    elif season == "winter": pills += '<span class="pill pill-winter">❄️ Winter</span>'
+    else: pills += '<span class="pill pill-allyear">🌍 All Year Round</span>'
     if valid_till:
-        if is_expired:
-            pills += f'<span class="pill pill-expired">⚠️ Expired {valid_till}</span>'
-        else:
-            pills += f'<span class="pill pill-valid">✓ Valid till {valid_till}</span>'
+        if is_expired: pills += f'<span class="pill pill-expired">⚠️ Expired {valid_till}</span>'
+        else: pills += f'<span class="pill pill-valid">✓ Valid till {valid_till}</span>'
 
     has_map = any(get_coords(c, coords_cache) for c in cities)
     map_html = f'<div class="card-map"><div id="{map_id}" class="map-inner"></div></div>' if has_map else ''
@@ -556,9 +548,9 @@ def make_brochure_card(pdf_filename, pdf_data, title, description, map_id, coord
         if is_expired:
             price_html = '<div class="price-tag" style="color:#e65100;">Check availability</div>'
         elif is_private:
-            price_html = f'<div class="price-tag">From €{price:,} pp (group rate)</div>'
+            price_html = f'<div class="price-tag">From {currency}{price:,} pp (group rate)</div>'
         else:
-            price_html = f'<div class="price-tag">From €{price:,} pp (twin)</div>'
+            price_html = f'<div class="price-tag">From {currency}{price:,} pp (twin)</div>'
     else:
         price_html = ""
 
@@ -666,8 +658,10 @@ def update_packages_json(packages_path, all_found, desc_cache):
                 "region": item["region"], "folder": item["folder"],
                 "cities": pd.get("cities", []), "duration": pd.get("duration", ""),
                 "type": pd.get("tour_type", ""), "season": pd.get("season", "all-year"),
-                "price_twin": pd.get("price_twin"), "valid_till": pd.get("valid_till"),
-                "description": desc_cache.get(key, ""), "tags": pd.get("cities", [])
+                "price_twin": pd.get("price_twin"), "currency": pd.get("currency", "€"),
+                "valid_till": pd.get("valid_till"),
+                "description": desc_cache.get(key, ""),
+                "tags": pd.get("cities", [])
             })
     with open(packages_path, 'w') as f:
         json.dump({"packages": new_pkgs}, f, indent=2)
@@ -687,11 +681,9 @@ def main():
 
     for folder_rel, config in FOLDER_CONFIG.items():
         folder_abs = os.path.join(REPO_ROOT, folder_rel)
-        if not os.path.isdir(folder_abs):
-            continue
+        if not os.path.isdir(folder_abs): continue
         pdfs = sorted([f for f in os.listdir(folder_abs) if f.lower().endswith('.pdf')])
-        if not pdfs:
-            continue
+        if not pdfs: continue
         print(f"\n{folder_rel} — {len(pdfs)} PDFs")
 
         depth = config["depth"]
@@ -733,8 +725,7 @@ def main():
             })
             cards.append(make_brochure_card(pdf, pdf_data, title, desc, map_id, coords_cache))
             js = make_map_js(map_id, pdf_data.get("cities", []), coords_cache)
-            if js:
-                maps_js_parts.append(js)
+            if js: maps_js_parts.append(js)
             tt = pdf_data.get("tour_type", "")
             if tt and tt not in tour_types_seen:
                 tour_types_seen.append(tt)
