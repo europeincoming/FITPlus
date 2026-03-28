@@ -61,7 +61,8 @@ footer{text-align:center;margin-top:60px;padding:32px 0;color:#9e9e9e;font-size:
 <body>
 <script>
 (async function(){try{const r=await fetch('https://api.country.is/');const d=await r.json();
-if(['US','CA','AU','NZ'].includes(d.country)){document.body.innerHTML='<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;font-family:sans-serif;background:#f5f5f5;text-align:center"><h1 style="font-size:48px">🌍</h1><h2>Service Not Available</h2><p style="color:#757575">This site is not available in your region.</p></div>';}}catch(e){}}
+if(['US','CA','AU','NZ'].includes(d.country)){document.body.innerHTML='<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;font-family:sans-serif;background:#f5f5f5;text-align:center"><h1 style="font-size:48px">🌍</h1><h2>Service Not Available</h2><p style="color:#757575">This site is not available in your region.</p></div>';}
+}catch(e){}}
 )();</script><nav class="top-nav"><div class="nav-container">
 <a href="../../"><img src="../../logo.png" alt="Europe Incoming" class="logo"></a>
 <input type="text" class="search-box" placeholder="Search packages - type city or country" id="searchBox">
@@ -103,7 +104,7 @@ if(['US','CA','AU','NZ'].includes(d.country)){document.body.innerHTML='<div styl
     <div class="card-pills"><span class="pill pill-duration">🕐 4 nights / 5 days</span><span class="pill pill-allyear">🌍 All Year Round</span><span class="pill pill-valid">✓ Valid till Sep 2026</span></div>
     <div class="card-description">The best of Kiruna, curated and ready to explore.</div>
     <div class="cities-list">📍 Kiruna</div>
-    <div class="price-tag">From €1,237 pp (twin)</div>
+    <div class="price-tag">From €131 pp (twin)</div>
   </div>
   <div class="card-map"><div id="map_kiruna_regular_4_n_2" class="map-inner"></div></div>
 </a>
@@ -125,7 +126,7 @@ if(['US','CA','AU','NZ'].includes(d.country)){document.body.innerHTML='<div styl
     <div class="card-pills"><span class="pill pill-duration">🕐 7 nights / 8 days</span><span class="pill pill-allyear">🌍 All Year Round</span><span class="pill pill-valid">✓ Valid till Sep 2026</span></div>
     <div class="card-description">Kiruna elegance meets Abisko charm.</div>
     <div class="cities-list">📍 Kiruna · Abisko</div>
-    <div class="price-tag">From €1,989 pp (twin)</div>
+    <div class="price-tag">From €131 pp (twin)</div>
   </div>
   <div class="card-map"><div id="map_swedish_lapland_re_4" class="map-inner"></div></div>
 </a>
@@ -136,7 +137,7 @@ if(['US','CA','AU','NZ'].includes(d.country)){document.body.innerHTML='<div styl
     <div class="card-pills"><span class="pill pill-duration">🕐 4 nights / 5 days</span><span class="pill pill-allyear">🌍 All Year Round</span><span class="pill pill-valid">✓ Valid till Sep 2026</span></div>
     <div class="card-description">Gateway to the Arctic: husky sledding, whale watching, and aurora chasing.</div>
     
-    <div class="price-tag">From €2,118 pp (twin)</div>
+    <div class="price-tag">From €63 pp (twin)</div>
   </div>
   
 </a>
@@ -147,7 +148,7 @@ if(['US','CA','AU','NZ'].includes(d.country)){document.body.innerHTML='<div styl
     <div class="card-pills"><span class="pill pill-duration">🕐 7 nights / 8 days</span><span class="pill pill-allyear">🌍 All Year Round</span><span class="pill pill-valid">✓ Valid till Sep 2026</span></div>
     <div class="card-description">Slow Arctic Living: 7 nights to discover Tromsø</div>
     
-    <div class="price-tag">From €2,853 pp (twin)</div>
+    <div class="price-tag">From €63 pp (twin)</div>
   </div>
   
 </a>
@@ -160,11 +161,11 @@ if(['US','CA','AU','NZ'].includes(d.country)){document.body.innerHTML='<div styl
   if(!pts.length) return;
   var lats=pts.map(function(p){return p[0];});
   var lngs=pts.map(function(p){return p[1];});
-  var pad=0.4;
+  var pad=0.6;
   var bounds=[[Math.min.apply(null,lats)-pad,Math.min.apply(null,lngs)-pad],[Math.max.apply(null,lats)+pad,Math.max.apply(null,lngs)+pad]];
   var map=L.map('map_6_nights__7_days_n_0',{zoomControl:false,scrollWheelZoom:false,dragging:false,touchZoom:false,doubleClickZoom:false,boxZoom:false,keyboard:false,attributionControl:false});
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:13}).addTo(map);
-  map.fitBounds(bounds,{padding:[10,10]});
+  map.fitBounds(bounds,{padding:[20,20]});
   if(pts.length>1){var ll=pts.map(function(p){return[p[0],p[1]];});L.polyline(ll,{color:'#2196F3',weight:2.5,dashArray:'6,4',opacity:0.85}).addTo(map);}
   pts.forEach(function(p,i){
     var color=i===0?'#e53935':(i===pts.length-1?'#43a047':'#1565c0');
@@ -176,11 +177,11 @@ if(['US','CA','AU','NZ'].includes(d.country)){document.body.innerHTML='<div styl
   if(!pts.length) return;
   var lats=pts.map(function(p){return p[0];});
   var lngs=pts.map(function(p){return p[1];});
-  var pad=0.4;
+  var pad=0.6;
   var bounds=[[Math.min.apply(null,lats)-pad,Math.min.apply(null,lngs)-pad],[Math.max.apply(null,lats)+pad,Math.max.apply(null,lngs)+pad]];
   var map=L.map('map_iceland_self_drive_1',{zoomControl:false,scrollWheelZoom:false,dragging:false,touchZoom:false,doubleClickZoom:false,boxZoom:false,keyboard:false,attributionControl:false});
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:13}).addTo(map);
-  map.fitBounds(bounds,{padding:[10,10]});
+  map.fitBounds(bounds,{padding:[20,20]});
   if(pts.length>1){var ll=pts.map(function(p){return[p[0],p[1]];});L.polyline(ll,{color:'#2196F3',weight:2.5,dashArray:'6,4',opacity:0.85}).addTo(map);}
   pts.forEach(function(p,i){
     var color=i===0?'#e53935':(i===pts.length-1?'#43a047':'#1565c0');
@@ -192,11 +193,11 @@ if(['US','CA','AU','NZ'].includes(d.country)){document.body.innerHTML='<div styl
   if(!pts.length) return;
   var lats=pts.map(function(p){return p[0];});
   var lngs=pts.map(function(p){return p[1];});
-  var pad=0.4;
+  var pad=0.6;
   var bounds=[[Math.min.apply(null,lats)-pad,Math.min.apply(null,lngs)-pad],[Math.max.apply(null,lats)+pad,Math.max.apply(null,lngs)+pad]];
   var map=L.map('map_kiruna_regular_4_n_2',{zoomControl:false,scrollWheelZoom:false,dragging:false,touchZoom:false,doubleClickZoom:false,boxZoom:false,keyboard:false,attributionControl:false});
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:13}).addTo(map);
-  map.fitBounds(bounds,{padding:[10,10]});
+  map.fitBounds(bounds,{padding:[20,20]});
   if(pts.length>1){var ll=pts.map(function(p){return[p[0],p[1]];});L.polyline(ll,{color:'#2196F3',weight:2.5,dashArray:'6,4',opacity:0.85}).addTo(map);}
   pts.forEach(function(p,i){
     var color=i===0?'#e53935':(i===pts.length-1?'#43a047':'#1565c0');
@@ -208,11 +209,11 @@ if(['US','CA','AU','NZ'].includes(d.country)){document.body.innerHTML='<div styl
   if(!pts.length) return;
   var lats=pts.map(function(p){return p[0];});
   var lngs=pts.map(function(p){return p[1];});
-  var pad=0.4;
+  var pad=0.6;
   var bounds=[[Math.min.apply(null,lats)-pad,Math.min.apply(null,lngs)-pad],[Math.max.apply(null,lats)+pad,Math.max.apply(null,lngs)+pad]];
   var map=L.map('map_norway_nutshell_re_3',{zoomControl:false,scrollWheelZoom:false,dragging:false,touchZoom:false,doubleClickZoom:false,boxZoom:false,keyboard:false,attributionControl:false});
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:13}).addTo(map);
-  map.fitBounds(bounds,{padding:[10,10]});
+  map.fitBounds(bounds,{padding:[20,20]});
   if(pts.length>1){var ll=pts.map(function(p){return[p[0],p[1]];});L.polyline(ll,{color:'#2196F3',weight:2.5,dashArray:'6,4',opacity:0.85}).addTo(map);}
   pts.forEach(function(p,i){
     var color=i===0?'#e53935':(i===pts.length-1?'#43a047':'#1565c0');
@@ -224,11 +225,11 @@ if(['US','CA','AU','NZ'].includes(d.country)){document.body.innerHTML='<div styl
   if(!pts.length) return;
   var lats=pts.map(function(p){return p[0];});
   var lngs=pts.map(function(p){return p[1];});
-  var pad=0.4;
+  var pad=0.6;
   var bounds=[[Math.min.apply(null,lats)-pad,Math.min.apply(null,lngs)-pad],[Math.max.apply(null,lats)+pad,Math.max.apply(null,lngs)+pad]];
   var map=L.map('map_swedish_lapland_re_4',{zoomControl:false,scrollWheelZoom:false,dragging:false,touchZoom:false,doubleClickZoom:false,boxZoom:false,keyboard:false,attributionControl:false});
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:13}).addTo(map);
-  map.fitBounds(bounds,{padding:[10,10]});
+  map.fitBounds(bounds,{padding:[20,20]});
   if(pts.length>1){var ll=pts.map(function(p){return[p[0],p[1]];});L.polyline(ll,{color:'#2196F3',weight:2.5,dashArray:'6,4',opacity:0.85}).addTo(map);}
   pts.forEach(function(p,i){
     var color=i===0?'#e53935':(i===pts.length-1?'#43a047':'#1565c0');

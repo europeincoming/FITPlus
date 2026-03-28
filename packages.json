@@ -16,7 +16,7 @@
         "Canals",
         "Museums"
       ],
-      "description": "Curated City Break package with handpicked experiences."
+      "description": "The best of Amsterdam, curated and ready to explore."
     },
     {
       "id": "city-002",
@@ -34,7 +34,7 @@
         "Ancient History",
         "Acropolis"
       ],
-      "description": "Curated City Break package with handpicked experiences."
+      "description": "The best of Athens, curated and ready to explore."
     },
     {
       "id": "city-003",
@@ -52,7 +52,7 @@
         "Mediterranean",
         "Gaudi"
       ],
-      "description": "Curated City Break package with handpicked experiences."
+      "description": "The best of Barcelona, curated and ready to explore."
     },
     {
       "id": "city-004",
@@ -69,7 +69,7 @@
         "Norway",
         "Fjords"
       ],
-      "description": "Curated City Break package with handpicked experiences."
+      "description": "The best of Bergen, curated and ready to explore."
     },
     {
       "id": "city-005",
@@ -86,7 +86,7 @@
         "Germany",
         "History"
       ],
-      "description": "Curated City Break package with handpicked experiences."
+      "description": "The best of Berlin, curated and ready to explore."
     },
     {
       "id": "city-006",
@@ -103,7 +103,7 @@
         "Belgium",
         "Grand Place"
       ],
-      "description": "Curated City Break package with handpicked experiences."
+      "description": "The best of Brussels, curated and ready to explore."
     },
     {
       "id": "city-007",
@@ -121,7 +121,7 @@
         "Danube",
         "Thermal Baths"
       ],
-      "description": "Curated City Break package with handpicked experiences."
+      "description": "The best of Budapest, curated and ready to explore."
     },
     {
       "id": "city-008",
@@ -138,7 +138,7 @@
         "Denmark",
         "Nordic"
       ],
-      "description": "Curated City Break package with handpicked experiences."
+      "description": "The best of Copenhagen, curated and ready to explore."
     },
     {
       "id": "city-009",
@@ -154,7 +154,7 @@
       "tags": [
         "Ireland"
       ],
-      "description": "Curated City Break package with handpicked experiences."
+      "description": "The best of Dublin, curated and ready to explore."
     },
     {
       "id": "city-010",
@@ -171,7 +171,7 @@
         "Germany",
         "Rhine"
       ],
-      "description": "Curated City Break package with handpicked experiences."
+      "description": "The best of Dusseldorf, curated and ready to explore."
     },
     {
       "id": "city-011",
@@ -188,7 +188,7 @@
         "Scotland",
         "Castle"
       ],
-      "description": "Curated City Break package with handpicked experiences."
+      "description": "The best of Edinburgh, curated and ready to explore."
     },
     {
       "id": "city-012",
@@ -206,7 +206,7 @@
         "Tuscany",
         "Renaissance"
       ],
-      "description": "Curated City Break package with handpicked experiences."
+      "description": "The best of Florence, curated and ready to explore."
     },
     {
       "id": "city-013",
@@ -223,7 +223,7 @@
         "Germany",
         "Financial Hub"
       ],
-      "description": "Curated City Break package with handpicked experiences."
+      "description": "The best of Frankfurt, curated and ready to explore."
     },
     {
       "id": "city-014",
@@ -240,7 +240,7 @@
         "Switzerland",
         "Lake Geneva"
       ],
-      "description": "Curated City Break package with handpicked experiences."
+      "description": "The best of Geneva, curated and ready to explore."
     },
     {
       "id": "city-015",
@@ -273,7 +273,7 @@
         "Finland",
         "Nordic"
       ],
-      "description": "Curated City Break package with handpicked experiences."
+      "description": "The best of Helsinki, curated and ready to explore."
     },
     {
       "id": "city-017",
@@ -290,7 +290,7 @@
         "Austria",
         "Alps"
       ],
-      "description": "Curated City Break package with handpicked experiences."
+      "description": "The best of Innsbruck, curated and ready to explore."
     },
     {
       "id": "city-018",
@@ -308,7 +308,7 @@
         "Alps",
         "Jungfrau"
       ],
-      "description": "Curated City Break package with handpicked experiences."
+      "description": "The best of Interlaken, curated and ready to explore."
     },
     {
       "id": "city-019",
@@ -343,7 +343,7 @@
         "Portugal",
         "Atlantic"
       ],
-      "description": "Curated City Break package with handpicked experiences."
+      "description": "The best of Lisbon, curated and ready to explore."
     },
     {
       "id": "city-021",
@@ -361,7 +361,7 @@
         "Thames",
         "Royal"
       ],
-      "description": "Curated City Break package with handpicked experiences."
+      "description": "The best of London, curated and ready to explore."
     },
     {
       "id": "city-022",
@@ -379,7 +379,7 @@
         "Alps",
         "Lake"
       ],
-      "description": "Curated City Break package with handpicked experiences."
+      "description": "The best of Lucerne, curated and ready to explore."
     },
     {
       "id": "city-023",
@@ -396,7 +396,7 @@
         "Spain",
         "Museums"
       ],
-      "description": "Curated City Break package with handpicked experiences."
+      "description": "The best of Madrid, curated and ready to explore."
     },
     {
       "id": "city-024",
@@ -414,7 +414,7 @@
         "Fashion",
         "Duomo"
       ],
-      "description": "Curated City Break package with handpicked experiences."
+      "description": "The best of Milan, curated and ready to explore."
     },
     {
       "id": "city-025",
@@ -432,7 +432,7 @@
         "Bavaria",
         "Beer"
       ],
-      "description": "Curated City Break package with handpicked experiences."
+      "description": "The best of Munich, curated and ready to explore."
     },
     {
       "id": "city-026",
@@ -450,7 +450,7 @@
         "Islands",
         "Beaches"
       ],
-      "description": "Curated City Break package with handpicked experiences."
+      "description": "The best of Mykonos, curated and ready to explore."
     },
     {
       "id": "city-027",
@@ -468,7 +468,7 @@
         "French Riviera",
         "Mediterranean"
       ],
-      "description": "Curated City Break package with handpicked experiences."
+      "description": "The best of Nice, curated and ready to explore."
     },
     {
       "id": "city-028",
@@ -486,7 +486,7 @@
         "Nordic",
         "Fjords"
       ],
-      "description": "Curated City Break package with handpicked experiences."
+      "description": "The best of Oslo, curated and ready to explore."
     },
     {
       "id": "city-029",
@@ -504,7 +504,7 @@
         "Seine",
         "Eiffel Tower"
       ],
-      "description": "Curated City Break package with handpicked experiences."
+      "description": "The best of Paris, curated and ready to explore."
     },
     {
       "id": "city-030",
@@ -521,7 +521,7 @@
         "Czech Republic",
         "Historic"
       ],
-      "description": "Curated City Break package with handpicked experiences."
+      "description": "The best of Prague, curated and ready to explore."
     },
     {
       "id": "city-031",
@@ -540,7 +540,7 @@
         "Colosseum",
         "Vatican"
       ],
-      "description": "Curated City Break package with handpicked experiences."
+      "description": "The best of Rome, curated and ready to explore."
     },
     {
       "id": "city-032",
@@ -558,7 +558,7 @@
         "Mozart",
         "Alps"
       ],
-      "description": "Curated City Break package with handpicked experiences."
+      "description": "The best of Salzburg, curated and ready to explore."
     },
     {
       "id": "city-033",
@@ -577,7 +577,7 @@
         "Beaches",
         "Sunset"
       ],
-      "description": "Curated City Break package with handpicked experiences."
+      "description": "The best of Santorini, curated and ready to explore."
     },
     {
       "id": "city-034",
@@ -594,7 +594,7 @@
         "Sweden",
         "Nordic"
       ],
-      "description": "Curated City Break package with handpicked experiences."
+      "description": "The best of Stockholm, curated and ready to explore."
     },
     {
       "id": "city-035",
@@ -612,7 +612,7 @@
         "Canals",
         "Gondola"
       ],
-      "description": "Curated City Break package with handpicked experiences."
+      "description": "The best of Venice, curated and ready to explore."
     },
     {
       "id": "city-036",
@@ -630,7 +630,7 @@
         "Classical Music",
         "Danube"
       ],
-      "description": "Curated City Break package with handpicked experiences."
+      "description": "The best of Vienna, curated and ready to explore."
     },
     {
       "id": "city-037",
@@ -648,7 +648,7 @@
         "Lake",
         "Banking"
       ],
-      "description": "Curated City Break package with handpicked experiences."
+      "description": "The best of Zurich, curated and ready to explore."
     },
     {
       "id": "italy-003",
