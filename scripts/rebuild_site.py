@@ -1,13 +1,10 @@
 """
-rebuild_site.py — v10
+rebuild_site.py — v11
 Fixes:
-- £ and € both handled (currency auto-detected per PDF)
-- Date parsing handles DD/MM/YYYY and DD.MM.YY and DD.MM.YYYY
-- Title triple-underscore cleaned up correctly
-- Auto-geocoding via Nominatim for unknown cities
-- Description caching — AI only called for new PDFs
-- Private tour Min Pax pricing
-- Regular/Self Drive column-based Twin pricing
+- City break pricing: handles 4-column table (Single/Twin/Triple/Child)
+  with Extension night rows correctly skipped
+- City extraction: handles both "Overnight in X" and "Overnight X" patterns
+- Everything from v10 preserved
 """
 
 import os, re, json, urllib.request, urllib.parse, time
@@ -77,7 +74,6 @@ SEED_COORDS = {
     "Narvik": [68.4385, 17.4279], "Alta": [69.9689, 23.2716], "Rovaniemi": [66.5039, 25.7294],
     "Lofoten": [68.1566, 13.9989], "Flam": [60.8633, 7.1159], "Geiranger": [62.1008, 7.2050],
     "Trondheim": [63.4305, 10.3951],
-    # UK cities commonly in brochures
     "Cheltenham": [51.8994, -2.0783], "Barnstaple": [51.0803, -4.0588], "Truro": [50.2632, -5.0510],
     "Plymouth": [50.3755, -4.1427], "Exeter": [50.7184, -3.5339], "Bournemouth": [50.7192, -1.8808],
     "Bristol": [51.4545, -2.5879], "Cambridge": [52.2053, 0.1218], "Oxford": [51.7520, -1.2577],
@@ -95,7 +91,8 @@ COMPOUND_NAMES = {
 
 GEO_BLOCK = """<script>
 (async function(){try{const r=await fetch('https://api.country.is/');const d=await r.json();
-if(['US','CA','AU','NZ'].includes(d.country)){document.body.innerHTML='<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;font-family:sans-serif;background:#f5f5f5;text-align:center"><h1 style="font-size:48px">🌍</h1><h2>Service Not Available</h2><p style="color:#757575">This site is not available in your region.</p></div>';}}catch(e){}}
+if(['US','CA','AU','NZ'].includes(d.country)){document.body.innerHTML='<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;font-family:sans-serif;background:#f5f5f5;text-align:center"><h1 style="font-size:48px">🌍</h1><h2>Service Not Available</h2><p style="color:#757575">This site is not available in your region.</p></div>';}
+}catch(e){}}
 )();</script>"""
 
 GA = """<script async src="https://www.googletagmanager.com/gtag/js?id=G-04BZKH6574"></script>
@@ -249,7 +246,7 @@ def smart_destination(words):
 
 def make_title(filename):
     name = filename.replace('.pdf', '').replace('_', ' ')
-    name = re.sub(r'\s+', ' ', name).strip()  # collapse all multiple spaces
+    name = re.sub(r'\s+', ' ', name).strip()
     m = re.search(r'(\d+)\s*nights?,\s*(\d+)\s*days?\s+(.+)', name, re.IGNORECASE)
     if m:
         duration = f"{m.group(1)} nights, {m.group(2)} days"
@@ -270,13 +267,13 @@ def make_title(filename):
     rest = re.sub(r'\d{4}-\d{2,4}', '', rest)
     rest = re.sub(r'Europe\s+Incoming', '', rest, flags=re.IGNORECASE)
     rest = re.sub(r'\s+', ' ', rest).strip().strip('-').strip()
+    rest = re.sub(r'\s*&\s*', ' ', rest).strip()
     return f"{duration} {smart_destination(rest.split())}".strip()
 
 
 # ── PDF EXTRACTION ────────────────────────────────────────────────────────────
 
 def parse_date(d):
-    """Handle DD.MM.YY, DD.MM.YYYY, DD/MM/YYYY, DD/MM/YY"""
     for fmt in ['%d.%m.%Y', '%d.%m.%y', '%d/%m/%Y', '%d/%m/%y']:
         try:
             return datetime.strptime(d, fmt)
@@ -292,10 +289,8 @@ def detect_seasons(date_pairs):
         sd = parse_date(s)
         ed = parse_date(e)
         if sd and ed:
-            if sd.month in SUMMER or ed.month in SUMMER:
-                hs = True
-            if sd.month in WINTER or ed.month in WINTER:
-                hw = True
+            if sd.month in SUMMER or ed.month in SUMMER: hs = True
+            if sd.month in WINTER or ed.month in WINTER: hw = True
     if hs and hw: return "all-year"
     elif hs: return "summer"
     elif hw: return "winter"
@@ -303,37 +298,66 @@ def detect_seasons(date_pairs):
 
 def extract_price(txt, lines):
     """
-    Detect currency (€ or £) and extract lowest starting price.
-    - Private (Min Pax table): lowest price > 500
-    - Regular/Self Drive: Twin column (2nd in Single/Twin/Child groups)
+    Detect currency and extract lowest starting twin price.
+    Handles three table formats:
+    1. Private: Min Pax table
+    2. Regular/Self Drive: Single/Twin/Child (3 cols)
+    3. City Break: Single/Twin/Triple/Child (4 cols) with Extension night rows
     """
     currency = "£" if ("£" in txt and "€" not in txt) else "€"
     amt_pattern = r'[€£]\s*([\d,]+)'
 
+    # Private — Min Pax table
     if re.search(r'Min\s*Pax', txt, re.IGNORECASE):
-        section = re.search(
-            r'Min\s*Pax.*?(?:Sample Hotels|Terms)',
-            txt, re.DOTALL | re.IGNORECASE
-        )
+        section = re.search(r'Min\s*Pax.*?(?:Sample Hotels|Terms|Hotels\b)', txt, re.DOTALL|re.IGNORECASE)
         if section:
             amounts = re.findall(amt_pattern, section.group(0))
-            prices = [int(a.replace(',', '')) for a in amounts
-                      if int(a.replace(',', '')) > 500]
+            prices = [int(a.replace(',', '')) for a in amounts if int(a.replace(',', '')) > 500]
             return (min(prices), currency) if prices else (None, currency)
         return (None, currency)
 
-    # Regular/Self Drive — column-based
     ti = next((i for i, l in enumerate(lines) if 'Twin' in l and 'Do' in l), None)
-    if ti:
-        ep = []
-        for l in lines[ti:ti + 30]:
-            m = re.match(amt_pattern, l)
-            if m:
-                ep.append(int(m.group(1).replace(',', '')))
-        twins = ep[1::3] if len(ep) >= 3 else ep[1:2] if len(ep) >= 2 else []
-        return (min(twins), currency) if twins else (None, currency)
+    if not ti:
+        return (None, currency)
 
-    return (None, currency)
+    # Detect if table has Triple column (city break format)
+    has_triple = any('Triple' in l for l in lines[max(0, ti-3):ti+3])
+
+    ep = []
+    skip_count = 0
+    for l in lines[ti:ti + 50]:
+        if re.search(r'Extension', l, re.IGNORECASE):
+            # Skip the next N price values for this extension row
+            skip_count = 4 if has_triple else 3
+            continue
+        m = re.match(amt_pattern, l)
+        if m:
+            if skip_count > 0:
+                skip_count -= 1
+                continue
+            ep.append(int(m.group(1).replace(',', '')))
+
+    if has_triple:
+        # 4 cols: Single=0, Twin=1, Triple=2, Child=3
+        twins = ep[1::4] if len(ep) >= 4 else []
+    else:
+        # 3 cols: Single=0, Twin=1, Child=2
+        twins = ep[1::3] if len(ep) >= 3 else ep[1:2] if len(ep) >= 2 else []
+
+    return (min(twins), currency) if twins else (None, currency)
+
+def extract_cities(txt):
+    """
+    Extract overnight cities. Handles:
+    - "Overnight in Amsterdam"  (multi-country style)
+    - "Overnight Amsterdam"     (city break style)
+    """
+    # Try "Overnight in X" first
+    cities = re.findall(r'Overnight in ([A-Z][a-zA-Z\s]+?)[\.\n,]', txt)
+    if not cities:
+        # Fall back to "Overnight X"
+        cities = re.findall(r'Overnight\s+([A-Z][a-zA-Z]+)', txt)
+    return list(dict.fromkeys([c.strip() for c in cities]))[:6]
 
 def extract_pdf_data(pdf_path, filename):
     r = {
@@ -341,7 +365,6 @@ def extract_pdf_data(pdf_path, filename):
         "price_twin": None, "currency": "€", "season": "all-year",
         "valid_till": None, "is_expired": False, "includes": []
     }
-
     name = filename.replace('_', ' ')
     dur = re.search(r'(\d+)\s*nights?\s*/?,?\s*(\d+)\s*days?', name, re.IGNORECASE)
     if dur:
@@ -357,38 +380,28 @@ def extract_pdf_data(pdf_path, filename):
         txt = "\n".join(p.get_text() for p in doc)
         lines = [l.strip() for l in txt.split('\n')]
 
-        # Cities
-        oc = re.findall(r'Overnight in ([A-Z][a-zA-Z\s]+?)[\.\n,]', txt)
-        r["cities"] = list(dict.fromkeys([c.strip() for c in oc]))[:6]
+        r["cities"] = extract_cities(txt)
 
-        # Dates — handles DD.MM.YY, DD.MM.YYYY, DD/MM/YYYY
         all_dates_raw = re.findall(r'\b(\d{2}[./]\d{2}[./]\d{2,4})\b', txt)
         valid_dates = []
         for d in all_dates_raw:
             parsed = parse_date(d)
-            if parsed:
-                valid_dates.append((d, parsed))
-
+            if parsed: valid_dates.append((d, parsed))
         if valid_dates:
             strs = [v[0] for v in valid_dates]
             objs = [v[1] for v in valid_dates]
             dp = [(strs[i], strs[i + 1]) for i in range(0, len(strs) - 1, 2)]
-            if dp:
-                r["season"] = detect_seasons(dp)
+            if dp: r["season"] = detect_seasons(dp)
             latest = max(objs)
             r["valid_till"] = latest.strftime("%b %Y")
             r["is_expired"] = latest < datetime.now()
 
-        # Price + currency
         price, currency = extract_price(txt, lines)
         r["price_twin"] = price
         r["currency"] = currency
 
-        # Includes
-        im = re.search(
-            r'price includes:(.*?)(?:Sample Tours|Terms|Sample Hotels)',
-            txt, re.DOTALL | re.IGNORECASE
-        )
+        im = re.search(r'price includes:(.*?)(?:Sample Tours|Terms|Sample Hotels|Hotels\b)',
+                       txt, re.DOTALL|re.IGNORECASE)
         if im:
             il = [l.strip().lstrip('•').strip() for l in im.group(1).split('\n')
                   if l.strip() and not l.strip().startswith('**') and len(l.strip()) > 5]
@@ -396,7 +409,6 @@ def extract_pdf_data(pdf_path, filename):
 
     except Exception as e:
         print(f"  WARNING {filename}: {e}")
-
     return r
 
 
@@ -407,8 +419,8 @@ def extract_itinerary(pdf_path):
         doc = fitz.open(pdf_path)
         txt = "\n".join(p.get_text() for p in doc)
         m = re.search(
-            r'(Day\s*1\s*[,:\-\s].+?)(?:This package price includes|Sample Tours|Terms\s*[&\n]|Sample Hotels|$)',
-            txt, re.DOTALL | re.IGNORECASE
+            r'(Day\s*1\s*[,:\-\s].+?)(?:This package price includes|Sample [Tt]ours|Terms\s*[&\n]|Sample Hotels|Hotels\b|$)',
+            txt, re.DOTALL|re.IGNORECASE
         )
         if m:
             raw = m.group(1).strip()
@@ -436,14 +448,12 @@ def generate_description(cities, region, tour_type, season, pdf_path, cached_des
         return _fallback_desc(cities, region, tour_type)
 
     season_hint = ""
-    if season == "winter":
-        season_hint = "This is a winter package. Highlight cold-weather experiences if relevant. "
-    elif season == "summer":
-        season_hint = "This is a summer/warm season package. "
+    if season == "winter": season_hint = "This is a winter package. "
+    elif season == "summer": season_hint = "This is a summer/warm season package. "
 
     prompt = (
         f"Tour itinerary:\n{itinerary}\n\n"
-        f"Tour type: {tour_type or 'guided'}. {season_hint}"
+        f"Tour type: {tour_type or 'city break'}. {season_hint}"
         f"Write ONE punchy sentence (max 12 words) capturing the ESSENCE and VIBE of this specific tour. "
         f"Don't list city names. Don't say 'explore' or 'journey through'. "
         f"Be vivid and specific to what actually happens. Just the sentence, no quotes, no preamble."
@@ -454,17 +464,16 @@ def generate_description(cities, region, tour_type, season, pdf_path, cached_des
             {"role": "system", "content": (
                 "You write punchy one-sentence travel vibes capturing the soul of a tour. "
                 "Specific, sensory, evocative. Never generic. Never list city names. "
-                "Never mention the region name. Focus on what's unique about THIS itinerary. "
+                "Focus on what's unique about THIS itinerary. "
                 "Good examples: "
-                "'Cliffside drives, Bronze Age towers and Neptune's hidden sea caves.' "
-                "'D-Day beaches, Loire chateaux and Montmartre twilight strolls.' "
-                "'Thermal baths, Habsburg grandeur and Danube river evenings.' "
-                "'Northern lights hunting, reindeer safaris and Arctic silence.'"
+                "'Canal cruises, Anne Frank's hideaway and golden-hour cycling.' "
+                "'Acropolis at dawn, taverna nights and Aegean sea light.' "
+                "'Baroque palaces, thermal baths and Danube bridge views.' "
+                "'Cliffside drives, Bronze Age towers and hidden sea caves.'"
             )},
             {"role": "user", "content": prompt}
         ],
-        "max_tokens": 80,
-        "temperature": 0.9
+        "max_tokens": 80, "temperature": 0.9
     }).encode()
 
     try:
@@ -497,19 +506,18 @@ def make_map_js(map_id, cities, coords_cache):
         coords = get_coords(city, coords_cache)
         if coords:
             points.append([coords[0], coords[1], city])
-    if not points:
-        return ""
+    if not points: return ""
     coords_js = json.dumps(points)
     return f"""(function(){{
   var pts={coords_js};
   if(!pts.length) return;
   var lats=pts.map(function(p){{return p[0];}});
   var lngs=pts.map(function(p){{return p[1];}});
-  var pad=0.4;
+  var pad=0.6;
   var bounds=[[Math.min.apply(null,lats)-pad,Math.min.apply(null,lngs)-pad],[Math.max.apply(null,lats)+pad,Math.max.apply(null,lngs)+pad]];
   var map=L.map('{map_id}',{{zoomControl:false,scrollWheelZoom:false,dragging:false,touchZoom:false,doubleClickZoom:false,boxZoom:false,keyboard:false,attributionControl:false}});
   L.tileLayer('https://{{s}}.tile.openstreetmap.org/{{z}}/{{x}}/{{y}}.png',{{maxZoom:13}}).addTo(map);
-  map.fitBounds(bounds,{{padding:[10,10]}});
+  map.fitBounds(bounds,{{padding:[20,20]}});
   if(pts.length>1){{var ll=pts.map(function(p){{return[p[0],p[1]];}});L.polyline(ll,{{color:'#2196F3',weight:2.5,dashArray:'6,4',opacity:0.85}}).addTo(map);}}
   pts.forEach(function(p,i){{
     var color=i===0?'#e53935':(i===pts.length-1?'#43a047':'#1565c0');
