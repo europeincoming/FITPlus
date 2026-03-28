@@ -78,7 +78,21 @@ CITY_COORDS = {
     "York": [53.9600, -1.0873], "Bath": [51.3758, -2.3599], "Killarney": [52.0599, -9.5044],
     "Hallstatt": [47.5622, 13.6493], "Graz": [47.0707, 15.4395],
     "Amalfi": [40.6340, 14.6025], "Positano": [40.6281, 14.4850], "Pompeii": [40.7461, 14.5019],
-    "Venice Mestre": [45.4847, 12.2386],
+    "Venice Mestre": [45.4847, 12.2386], "Tromso": [69.6489, 18.9551],
+    "Kiruna": [67.8558, 20.2253],
+    "Abisko": [68.3493, 18.8306],
+    "Narvik": [68.4385, 17.4279],
+    "Alta": [69.9689, 23.2716],
+    "Rovaniemi": [66.5039, 25.7294],
+    "Lulea": [65.5848, 22.1567],
+    "Longyearbyen": [78.2232, 15.6267],
+    "Harstad": [68.7983, 16.5439],
+    "Lofoten": [68.1566, 13.9989],
+    "Flam": [60.8633, 7.1159],
+    "Geiranger": [62.1008, 7.2050],
+    "Alesund": [62.4723, 6.1549],
+    "Trondheim": [63.4305, 10.3951],
+    "Bodo": [67.2804, 14.4049]
 }
 
 COMPOUND_NAMES = {
@@ -238,15 +252,30 @@ def extract_pdf_data(pdf_path, filename):
         dp=re.findall(r'(\d{2}\.\d{2}\.\d{2})\s*\n?\s*(\d{2}\.\d{2}\.\d{2})',txt)
         if dp:
             r["season"]=detect_seasons(dp)
-            # Find latest end date for valid-till
-            end_dates=[]
-            for s,e in dp:
-                try: end_dates.append(datetime.strptime(e,'%d.%m.%y'))
-                except: pass
+            # Find latest end date for valid-till# Date extraction — find all dates, pair consecutively
+        all_dates_raw = re.findall(r'\b(\d{2}\.\d{2}\.\d{2})\b', txt)
+        # Filter out dates that look like prices (e.g. page refs) — keep only valid date pairs
+        valid_dates = []
+        for d in all_dates_raw:
+            try:
+                datetime.strptime(d, '%d.%m.%y')
+                valid_dates.append(d)
+            except:
+                pass
+        # Pair as start/end date ranges
+        dp = [(valid_dates[i], valid_dates[i+1]) for i in range(0, len(valid_dates)-1, 2)]
+        if dp:
+            r["season"] = detect_seasons(dp)
+            end_dates = []
+            for s, e in dp:
+                try:
+                    end_dates.append(datetime.strptime(e, '%d.%m.%y'))
+                except:
+                    pass
             if end_dates:
-                latest=max(end_dates)
-                r["valid_till"]=latest.strftime("%b %Y")
-                r["is_expired"]=latest < datetime.now()
+                latest = max(end_dates)
+                r["valid_till"] = latest.strftime("%b %Y")
+                r["is_expired"] = latest < datetime.now()
         ti=next((i for i,l in enumerate(lines) if 'Twin' in l and 'Do' in l),None)
         if ti:
             ep=[]
@@ -266,44 +295,48 @@ def extract_pdf_data(pdf_path, filename):
 # ── ITINERARY EXTRACTION ──────────────────────────────────────────────────────
 
 def extract_itinerary(pdf_path):
-    """Pull the day-by-day text from the PDF, cleaned up."""
+    """Pull the day-by-day itinerary text from PDF. Flexible on format."""
     try:
         doc = fitz.open(pdf_path)
         txt = "\n".join(p.get_text() for p in doc)
-        m = re.search(r'(Day 1:.*?)(?:This package price includes|Sample Tours|Terms)', txt, re.DOTALL)
+ 
+        # Try to find itinerary section — flexible start, multiple end markers
+        m = re.search(
+            r'(Day\s*1\s*[:\-\s].+?)(?:This package price includes|Sample Tours|Terms\s*[&\n]|Sample Hotels|$)',
+            txt, re.DOTALL | re.IGNORECASE
+        )
         if m:
             raw = m.group(1).strip()
-            raw = re.sub(r'Optional:.*?\n', '', raw)   # strip optional excursion lines
+            raw = re.sub(r'Optional:.*?(?=Day\s*\d|$)', '', raw, flags=re.DOTALL)
             raw = re.sub(r'\s+', ' ', raw).strip()
-            return raw[:1500]  # cap at 1500 chars — enough context, not too many tokens
-    except:
-        pass
+            return raw[:1500]
+    except Exception as e:
+        print(f"    Itinerary extract failed: {e}")
     return ""
-
 
 # ── AI DESCRIPTION ────────────────────────────────────────────────────────────
 
 def generate_description(cities, region, tour_type, season, pdf_path):
     itinerary = extract_itinerary(pdf_path)
-
+ 
     if not GITHUB_TOKEN or not itinerary:
         return _fallback_desc(cities, region, tour_type)
-
+ 
     season_hint = ""
     if season == "winter":
-        season_hint = "This is a winter package. "
+        season_hint = "This is a winter package. Highlight cold-weather experiences if relevant. "
     elif season == "summer":
         season_hint = "This is a summer / warm season package. "
-
+ 
     prompt = (
         f"Tour itinerary:\n{itinerary}\n\n"
         f"Tour type: {tour_type or 'guided'}. {season_hint}"
         f"Write ONE punchy sentence (max 12 words) capturing the ESSENCE and VIBE of this specific tour. "
-        f"Don't list cities. Don't say 'explore' or 'journey through'. "
-        f"Be vivid, specific to what actually happens on this tour — the landscapes, culture, experiences. "
-        f"Just the sentence, no quotes."
+        f"Don't list city names — they're shown elsewhere. Don't say 'explore' or 'journey through'. "
+        f"Be vivid and specific to what actually happens — the landscapes, culture, unique experiences. "
+        f"Just the sentence, no quotes, no preamble."
     )
-
+ 
     payload = json.dumps({
         "model": "gpt-4o-mini",
         "messages": [
@@ -312,10 +345,12 @@ def generate_description(cities, region, tour_type, season, pdf_path):
                 "content": (
                     "You write punchy one-sentence travel vibes that capture the soul of a tour. "
                     "Specific, sensory, evocative. Never generic. Never list city names. "
-                    "Examples of good output: "
+                    "Never mention the region name. Focus on what's unique about THIS itinerary. "
+                    "Good examples: "
                     "'Cliffside drives, Bronze Age towers and Neptune's hidden sea caves.' "
-                    "'Loch Ness mist, Highland whisky trails and ancient castle ruins.' "
-                    "'Normandy beaches, Loire châteaux and Parisian rooftop sunsets.'"
+                    "'Northern lights hunting, reindeer safaris and Arctic silence.' "
+                    "'D-Day beaches, Loire châteaux and Montmartre twilight strolls.' "
+                    "'Thermal baths, Habsburg grandeur and Danube river evenings.'"
                 )
             },
             {"role": "user", "content": prompt}
@@ -323,7 +358,7 @@ def generate_description(cities, region, tour_type, season, pdf_path):
         "max_tokens": 80,
         "temperature": 0.9
     }).encode()
-
+ 
     try:
         req = urllib.request.Request(
             "https://models.inference.ai.azure.com/chat/completions",
@@ -337,8 +372,8 @@ def generate_description(cities, region, tour_type, season, pdf_path):
     except Exception as e:
         print(f"    AI failed ({e}), fallback")
         return _fallback_desc(cities, region, tour_type)
-
-
+ 
+ 
 def _fallback_desc(cities, region, tour_type):
     if not cities:
         return f"Curated {region} package with handpicked experiences."
