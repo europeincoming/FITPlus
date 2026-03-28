@@ -1,8 +1,8 @@
 """
-rebuild_site.py — v4
-- Brochure cards: Leaflet maps, AI descriptions, valid-till date, expired warning
+rebuild_site.py — v5
+- Brochure cards: Leaflet maps, AI descriptions from itinerary text, valid-till, expired warning
 - Region cards: package count + tour types, auto-generated from folders
-- Auto-generates multi-country/index.html from folder structure
+- Auto-generates multi-country/index.html
 """
 
 import os, re, json, urllib.request
@@ -11,8 +11,6 @@ import fitz
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN", "")
-
-# ── FOLDER CONFIG ─────────────────────────────────────────────────────────────
 
 FOLDER_CONFIG = {
     "city-break": {"title": "City Breaks Packages", "breadcrumb": "City Breaks", "region": "City Break", "depth": 1},
@@ -26,7 +24,6 @@ FOLDER_CONFIG = {
     "multi-country/western-central-europe": {"title": "Western & Central Europe", "breadcrumb": "Western & Central Europe", "region": "Western & Central Europe", "depth": 2},
 }
 
-# Region cards config for multi-country index (folder slug → display info)
 REGION_DISPLAY = {
     "italy": "Italy",
     "eastern-europe": "Eastern Europe",
@@ -37,8 +34,6 @@ REGION_DISPLAY = {
     "uk-ireland": "UK & Ireland",
     "western-central-europe": "Western & Central Europe",
 }
-
-# ── CITY COORDS ───────────────────────────────────────────────────────────────
 
 CITY_COORDS = {
     "Amsterdam": [52.3676, 4.9041], "Athens": [37.9838, 23.7275], "Barcelona": [41.3851, 2.1734],
@@ -78,29 +73,19 @@ CITY_COORDS = {
     "York": [53.9600, -1.0873], "Bath": [51.3758, -2.3599], "Killarney": [52.0599, -9.5044],
     "Hallstatt": [47.5622, 13.6493], "Graz": [47.0707, 15.4395],
     "Amalfi": [40.6340, 14.6025], "Positano": [40.6281, 14.4850], "Pompeii": [40.7461, 14.5019],
-    "Venice Mestre": [45.4847, 12.2386], "Tromso": [69.6489, 18.9551],
-    "Kiruna": [67.8558, 20.2253],
-    "Abisko": [68.3493, 18.8306],
-    "Narvik": [68.4385, 17.4279],
-    "Alta": [69.9689, 23.2716],
-    "Rovaniemi": [66.5039, 25.7294],
-    "Lulea": [65.5848, 22.1567],
-    "Longyearbyen": [78.2232, 15.6267],
-    "Harstad": [68.7983, 16.5439],
-    "Lofoten": [68.1566, 13.9989],
-    "Flam": [60.8633, 7.1159],
-    "Geiranger": [62.1008, 7.2050],
-    "Alesund": [62.4723, 6.1549],
-    "Trondheim": [63.4305, 10.3951],
-    "Bodo": [67.2804, 14.4049]
+    "Venice Mestre": [45.4847, 12.2386],
+    # Arctic / Scandinavia
+    "Tromso": [69.6489, 18.9551], "Kiruna": [67.8558, 20.2253], "Abisko": [68.3493, 18.8306],
+    "Narvik": [68.4385, 17.4279], "Alta": [69.9689, 23.2716], "Rovaniemi": [66.5039, 25.7294],
+    "Lulea": [65.5848, 22.1567], "Longyearbyen": [78.2232, 15.6267], "Harstad": [68.7983, 16.5439],
+    "Lofoten": [68.1566, 13.9989], "Flam": [60.8633, 7.1159], "Geiranger": [62.1008, 7.2050],
+    "Alesund": [62.4723, 6.1549], "Trondheim": [63.4305, 10.3951], "Bodo": [67.2804, 14.4049],
 }
 
 COMPOUND_NAMES = {
     'East Europe','Eastern Europe','Western Europe','Central Europe','Western Central Europe',
     'Costa Smeralda','Cala Gonone','Fort William','San Sebastian','Czech Republic','Venice Mestre',
 }
-
-# ── STATIC HTML SNIPPETS ──────────────────────────────────────────────────────
 
 GEO_BLOCK = """<script>
 (async function(){try{const r=await fetch('https://api.country.is/');const d=await r.json();
@@ -189,6 +174,7 @@ NAV = """<nav class="top-nav"><div class="nav-container">
   <a href="mailto:fitsales@europeincoming.com" class="contact-email">fitsales@europeincoming.com</a></div>
 </div></div></nav>"""
 
+
 # ── TITLE ─────────────────────────────────────────────────────────────────────
 
 def make_title(filename):
@@ -216,6 +202,7 @@ def make_title(filename):
     else: dest=' & '.join(words)
     return f"{duration} {dest}".strip()
 
+
 # ── PDF EXTRACTION ────────────────────────────────────────────────────────────
 
 def detect_seasons(date_pairs):
@@ -223,7 +210,8 @@ def detect_seasons(date_pairs):
     hs=hw=False
     for s,e in date_pairs:
         try:
-            sm=datetime.strptime(s,'%d.%m.%y').month; em=datetime.strptime(e,'%d.%m.%y').month
+            sm=datetime.strptime(s,'%d.%m.%y').month
+            em=datetime.strptime(e,'%d.%m.%y').month
             if sm in SUMMER or em in SUMMER: hs=True
             if sm in WINTER or em in WINTER: hw=True
         except: pass
@@ -247,35 +235,32 @@ def extract_pdf_data(pdf_path, filename):
         doc=fitz.open(pdf_path)
         txt="\n".join(p.get_text() for p in doc)
         lines=[l.strip() for l in txt.split('\n')]
+
+        # Cities from "Overnight in X"
         oc=re.findall(r'Overnight in ([A-Z][a-zA-Z\s]+?)[\.\n,]',txt)
         r["cities"]=list(dict.fromkeys([c.strip() for c in oc]))[:6]
-        dp=re.findall(r'(\d{2}\.\d{2}\.\d{2})\s*\n?\s*(\d{2}\.\d{2}\.\d{2})',txt)
-        if dp:
-            r["season"]=detect_seasons(dp)
-            # Find latest end date for valid-till# Date extraction — find all dates, pair consecutively
-        all_dates_raw = re.findall(r'\b(\d{2}\.\d{2}\.\d{2})\b', txt)
-        # Filter out dates that look like prices (e.g. page refs) — keep only valid date pairs
-        valid_dates = []
+
+        # Date extraction — find all dates, pair consecutively
+        all_dates_raw=re.findall(r'\b(\d{2}\.\d{2}\.\d{2})\b',txt)
+        valid_dates=[]
         for d in all_dates_raw:
             try:
-                datetime.strptime(d, '%d.%m.%y')
+                datetime.strptime(d,'%d.%m.%y')
                 valid_dates.append(d)
-            except:
-                pass
-        # Pair as start/end date ranges
-        dp = [(valid_dates[i], valid_dates[i+1]) for i in range(0, len(valid_dates)-1, 2)]
+            except: pass
+        dp=[(valid_dates[i],valid_dates[i+1]) for i in range(0,len(valid_dates)-1,2)]
         if dp:
-            r["season"] = detect_seasons(dp)
-            end_dates = []
-            for s, e in dp:
-                try:
-                    end_dates.append(datetime.strptime(e, '%d.%m.%y'))
-                except:
-                    pass
+            r["season"]=detect_seasons(dp)
+            end_dates=[]
+            for s,e in dp:
+                try: end_dates.append(datetime.strptime(e,'%d.%m.%y'))
+                except: pass
             if end_dates:
-                latest = max(end_dates)
-                r["valid_till"] = latest.strftime("%b %Y")
-                r["is_expired"] = latest < datetime.now()
+                latest=max(end_dates)
+                r["valid_till"]=latest.strftime("%b %Y")
+                r["is_expired"]=latest < datetime.now()
+
+        # Twin price — lowest across all seasons
         ti=next((i for i,l in enumerate(lines) if 'Twin' in l and 'Do' in l),None)
         if ti:
             ep=[]
@@ -284,106 +269,98 @@ def extract_pdf_data(pdf_path, filename):
                 if m: ep.append(int(m.group(1).replace(',','')))
             tw=ep[1::3] if len(ep)>=3 else ep[1:2] if len(ep)>=2 else []
             if tw: r["price_twin"]=min(tw)
+
+        # Includes
         im=re.search(r'price includes:(.*?)(?:Sample Tours|Terms|Sample Hotels)',txt,re.DOTALL|re.IGNORECASE)
         if im:
-            il=[l.strip().lstrip('•').strip() for l in im.group(1).split('\n') if l.strip() and not l.strip().startswith('**') and len(l.strip())>5]
+            il=[l.strip().lstrip('•').strip() for l in im.group(1).split('\n')
+                if l.strip() and not l.strip().startswith('**') and len(l.strip())>5]
             r["includes"]=il[:3]
+
     except Exception as e:
         print(f"  WARNING {filename}: {e}")
     return r
 
+
 # ── ITINERARY EXTRACTION ──────────────────────────────────────────────────────
 
 def extract_itinerary(pdf_path):
-    """Pull the day-by-day itinerary text from PDF. Flexible on format."""
+    """Pull day-by-day itinerary text from PDF. Flexible on format and end marker."""
     try:
-        doc = fitz.open(pdf_path)
-        txt = "\n".join(p.get_text() for p in doc)
- 
-        # Try to find itinerary section — flexible start, multiple end markers
-        m = re.search(
+        doc=fitz.open(pdf_path)
+        txt="\n".join(p.get_text() for p in doc)
+        m=re.search(
             r'(Day\s*1\s*[:\-\s].+?)(?:This package price includes|Sample Tours|Terms\s*[&\n]|Sample Hotels|$)',
-            txt, re.DOTALL | re.IGNORECASE
+            txt, re.DOTALL|re.IGNORECASE
         )
         if m:
-            raw = m.group(1).strip()
-            raw = re.sub(r'Optional:.*?(?=Day\s*\d|$)', '', raw, flags=re.DOTALL)
-            raw = re.sub(r'\s+', ' ', raw).strip()
+            raw=m.group(1).strip()
+            raw=re.sub(r'Optional:.*?(?=Day\s*\d|$)','',raw,flags=re.DOTALL)
+            raw=re.sub(r'\s+',' ',raw).strip()
             return raw[:1500]
     except Exception as e:
         print(f"    Itinerary extract failed: {e}")
     return ""
 
+
 # ── AI DESCRIPTION ────────────────────────────────────────────────────────────
 
 def generate_description(cities, region, tour_type, season, pdf_path):
-    itinerary = extract_itinerary(pdf_path)
- 
+    itinerary=extract_itinerary(pdf_path)
     if not GITHUB_TOKEN or not itinerary:
         return _fallback_desc(cities, region, tour_type)
- 
-    season_hint = ""
-    if season == "winter":
-        season_hint = "This is a winter package. Highlight cold-weather experiences if relevant. "
-    elif season == "summer":
-        season_hint = "This is a summer / warm season package. "
- 
-    prompt = (
+
+    season_hint=""
+    if season=="winter": season_hint="This is a winter package. Highlight cold-weather experiences if relevant. "
+    elif season=="summer": season_hint="This is a summer/warm season package. "
+
+    prompt=(
         f"Tour itinerary:\n{itinerary}\n\n"
         f"Tour type: {tour_type or 'guided'}. {season_hint}"
         f"Write ONE punchy sentence (max 12 words) capturing the ESSENCE and VIBE of this specific tour. "
         f"Don't list city names — they're shown elsewhere. Don't say 'explore' or 'journey through'. "
-        f"Be vivid and specific to what actually happens — the landscapes, culture, unique experiences. "
+        f"Be vivid and specific to what actually happens — landscapes, culture, unique experiences. "
         f"Just the sentence, no quotes, no preamble."
     )
- 
-    payload = json.dumps({
-        "model": "gpt-4o-mini",
-        "messages": [
-            {
-                "role": "system",
-                "content": (
-                    "You write punchy one-sentence travel vibes that capture the soul of a tour. "
-                    "Specific, sensory, evocative. Never generic. Never list city names. "
-                    "Never mention the region name. Focus on what's unique about THIS itinerary. "
-                    "Good examples: "
-                    "'Cliffside drives, Bronze Age towers and Neptune's hidden sea caves.' "
-                    "'Northern lights hunting, reindeer safaris and Arctic silence.' "
-                    "'D-Day beaches, Loire châteaux and Montmartre twilight strolls.' "
-                    "'Thermal baths, Habsburg grandeur and Danube river evenings.'"
-                )
-            },
-            {"role": "user", "content": prompt}
+    payload=json.dumps({
+        "model":"gpt-4o-mini",
+        "messages":[
+            {"role":"system","content":(
+                "You write punchy one-sentence travel vibes that capture the soul of a tour. "
+                "Specific, sensory, evocative. Never generic. Never list city names. "
+                "Never mention the region name. Focus on what's unique about THIS itinerary. "
+                "Good examples: "
+                "'Cliffside drives, Bronze Age towers and Neptune's hidden sea caves.' "
+                "'Northern lights hunting, reindeer safaris and Arctic silence.' "
+                "'D-Day beaches, Loire chateaux and Montmartre twilight strolls.' "
+                "'Thermal baths, Habsburg grandeur and Danube river evenings.'"
+            )},
+            {"role":"user","content":prompt}
         ],
-        "max_tokens": 80,
-        "temperature": 0.9
+        "max_tokens":80,
+        "temperature":0.9
     }).encode()
- 
     try:
-        req = urllib.request.Request(
+        req=urllib.request.Request(
             "https://models.inference.ai.azure.com/chat/completions",
             data=payload,
-            headers={"Content-Type": "application/json", "Authorization": f"Bearer {GITHUB_TOKEN}"}
+            headers={"Content-Type":"application/json","Authorization":f"Bearer {GITHUB_TOKEN}"}
         )
-        with urllib.request.urlopen(req, timeout=20) as resp:
-            desc = json.loads(resp.read())["choices"][0]["message"]["content"].strip().strip('"').strip("'")
+        with urllib.request.urlopen(req,timeout=20) as resp:
+            desc=json.loads(resp.read())["choices"][0]["message"]["content"].strip().strip('"').strip("'")
             print(f"    AI: {desc}")
             return desc
     except Exception as e:
         print(f"    AI failed ({e}), fallback")
-        return _fallback_desc(cities, region, tour_type)
- 
- 
+        return _fallback_desc(cities,region,tour_type)
+
 def _fallback_desc(cities, region, tour_type):
-    if not cities:
-        return f"Curated {region} package with handpicked experiences."
-    if len(cities) == 1:
-        return f"The best of {cities[0]}, curated and ready to explore."
-    elif len(cities) == 2:
-        return f"{cities[0]} elegance meets {cities[1]} charm."
-    else:
-        return f"{cities[0]}, {cities[1]} and {len(cities)-2} more unmissable stops."
-        
+    if not cities: return f"Curated {region} package with handpicked experiences."
+    if len(cities)==1: return f"The best of {cities[0]}, curated and ready to explore."
+    elif len(cities)==2: return f"{cities[0]} elegance meets {cities[1]} charm."
+    else: return f"{cities[0]}, {cities[1]} and {len(cities)-2} more unmissable stops."
+
+
 # ── MAP JS ────────────────────────────────────────────────────────────────────
 
 def make_map_js(map_id, cities):
@@ -406,6 +383,7 @@ def make_map_js(map_id, cities):
     L.circleMarker([p[0],p[1]],{{radius:5,fillColor:color,color:'white',weight:2,fillOpacity:1}}).addTo(map).bindTooltip(p[2],{{permanent:true,direction:'top',className:'city-tip',offset:[0,-5]}});
   }});
 }})();"""
+
 
 # ── BROCHURE CARD ─────────────────────────────────────────────────────────────
 
@@ -432,13 +410,10 @@ def make_brochure_card(pdf_filename, pdf_data, title, description, map_id):
     has_map=any(c in CITY_COORDS for c in cities)
     map_html=f'<div class="card-map"><div id="{map_id}" class="map-inner"></div></div>' if has_map else ''
     expired_class=" expired" if is_expired else ""
-
-    price_html=""
     if price:
-        if is_expired:
-            price_html='<div class="price-tag" style="color:#e65100;">Check availability</div>'
-        else:
-            price_html=f'<div class="price-tag">From €{price:,} pp (twin)</div>'
+        price_html='<div class="price-tag" style="color:#e65100;">Check availability</div>' if is_expired else f'<div class="price-tag">From €{price:,} pp (twin)</div>'
+    else:
+        price_html=""
 
     return f"""<a href="{pdf_filename}" class="brochure-card{expired_class}" target="_blank">
   <div class="card-info">
@@ -452,7 +427,8 @@ def make_brochure_card(pdf_filename, pdf_data, title, description, map_id):
   {map_html}
 </a>"""
 
-# ── REGION CARD (for multi-country index) ────────────────────────────────────
+
+# ── REGION CARD ───────────────────────────────────────────────────────────────
 
 def make_region_card(slug, display_name, pkg_count, tour_types):
     types_html=''.join(f'<span class="type-tag">{t}</span>' for t in tour_types)
@@ -463,6 +439,7 @@ def make_region_card(slug, display_name, pkg_count, tour_types):
   <div class="category-meta">{pkg_label}</div>
   <div class="category-types">{types_html}</div>
 </a>"""
+
 
 # ── INDEX BUILDERS ────────────────────────────────────────────────────────────
 
@@ -490,8 +467,8 @@ def build_brochure_index(title, breadcrumb, cards_html, maps_js, logo_src, logo_
 <script>window.addEventListener('load',function(){{{maps_js}}});</script>
 </body></html>"""
 
-def build_multicountry_index(region_cards_html, logo_src, logo_href, search_js):
-    nav=NAV.format(lh=logo_href,ls=logo_src)
+def build_multicountry_index(region_cards_html, logo_href, search_js):
+    nav=NAV.format(lh=logo_href,ls=logo_href+"logo.png")
     breadcrumb=f'<a href="{logo_href}">Home</a> › Multi-City & Country Packages'
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -513,6 +490,7 @@ def build_multicountry_index(region_cards_html, logo_src, logo_href, search_js):
 </div>
 <script src="{search_js}"></script>
 </body></html>"""
+
 
 # ── PACKAGES JSON ─────────────────────────────────────────────────────────────
 
@@ -539,13 +517,13 @@ def update_packages_json(packages_path, all_found):
         json.dump({"packages":new_pkgs},f,indent=2)
     print(f"  packages.json: {len(new_pkgs)} entries")
 
+
 # ── MAIN ──────────────────────────────────────────────────────────────────────
 
 def main():
     packages_path=os.path.join(REPO_ROOT,"packages.json")
     all_found=[]
-    # Collect per-region stats for multi-country index
-    region_stats={}  # slug → {count, tour_types}
+    region_stats={}
 
     for folder_rel, config in FOLDER_CONFIG.items():
         folder_abs=os.path.join(REPO_ROOT,folder_rel)
@@ -564,11 +542,17 @@ def main():
             breadcrumb=f'<a href="../../">Home</a> › <a href="../">Multi-Country</a> › {config["breadcrumb"]}'
 
         cards=[]; maps_js_parts=[]; tour_types_seen=[]
-        for idx,pdf in enumerate(pdfs):
+        for idx, pdf in enumerate(pdfs):
             print(f"  {pdf}")
             pdf_data=extract_pdf_data(os.path.join(folder_abs,pdf),pdf)
             title=make_title(pdf)
-            desc=generate_description(pdf_data.get("cities",[]),config["region"],pdf_data.get("tour_type",""),pdf_data.get("season","all-year"),os.path.join(folder_abs,pdf))
+            desc=generate_description(
+                pdf_data.get("cities",[]),
+                config["region"],
+                pdf_data.get("tour_type",""),
+                pdf_data.get("season","all-year"),
+                os.path.join(folder_abs,pdf)
+            )
             map_id=f"map_{re.sub(r'[^a-z0-9]','_',pdf.lower()[:18])}_{idx}"
             all_found.append({"filename":pdf,"title":title,"folder":folder_rel,"region":config["region"],"pdf_data":pdf_data})
             cards.append(make_brochure_card(pdf,pdf_data,title,desc,map_id))
@@ -582,12 +566,11 @@ def main():
             f.write(html)
         print(f"  Rebuilt {folder_rel}/index.html")
 
-        # Track region stats for multi-country index
         if depth==2:
             slug=folder_rel.replace("multi-country/","")
             region_stats[slug]={"count":len(pdfs),"tour_types":tour_types_seen,"display":config["title"]}
 
-    # Build multi-country index
+    # Auto-generate multi-country/index.html
     print("\nRebuilding multi-country/index.html...")
     mc_folder=os.path.join(REPO_ROOT,"multi-country")
     if os.path.isdir(mc_folder):
@@ -596,7 +579,7 @@ def main():
             stats=region_stats.get(slug,{"count":0,"tour_types":[]})
             if stats["count"]>0:
                 region_cards.append(make_region_card(slug,display,stats["count"],stats["tour_types"]))
-        mc_html=build_multicountry_index("\n".join(region_cards),"../logo.png","../","../global-search.js")
+        mc_html=build_multicountry_index("\n".join(region_cards),"../","../global-search.js")
         with open(os.path.join(mc_folder,"index.html"),'w',encoding='utf-8') as f:
             f.write(mc_html)
         print("  Rebuilt multi-country/index.html")
