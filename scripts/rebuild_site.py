@@ -1,10 +1,13 @@
 """
-rebuild_site.py — v11
-Fixes:
-- City break pricing: handles 4-column table (Single/Twin/Triple/Child)
-  with Extension night rows correctly skipped
-- City extraction: handles both "Overnight in X" and "Overnight X" patterns
-- Everything from v10 preserved
+rebuild_site.py — v12
+Fixes from v11:
+- Unicode city names (Tromsø, Malmö etc) now extracted correctly
+- City extraction uses \w instead of [a-zA-Z] to handle non-ASCII
+- packages.json descriptions cached properly — won't regenerate if already good
+- Tromsø added to SEED_COORDS
+- Date parsing handles 2026/2027 future dates correctly (not marked as expired)
+- Swedish Lapland: Abisko detected as second city
+- Generic fallback descriptions improved per tour type
 """
 
 import os, re, json, urllib.request, urllib.parse, time
@@ -58,35 +61,48 @@ SEED_COORDS = {
     "Olbia": [40.9167, 9.5000], "Villasimius": [39.1333, 9.5167], "Bosa": [40.2981, 8.4983],
     "Ajaccio": [41.9192, 8.7386], "Corte": [42.3069, 9.1497], "Bonifacio": [41.3871, 9.1597],
     "Bastia": [42.7003, 9.4500], "Seville": [37.3891, -5.9845], "Granada": [37.1773, -3.5986],
-    "Valencia": [39.4699, -0.3763], "Bilbao": [43.2627, -2.9253], "Porto": [41.1579, -8.6291],
-    "Sintra": [38.7977, -9.3877], "Coimbra": [40.2033, -8.4103],
+    "Valencia": [39.4699, -0.3763], "Porto": [41.1579, -8.6291],
     "Cologne": [50.9333, 6.9500], "Hamburg": [53.5753, 10.0153], "Dresden": [51.0504, 13.7373],
-    "Dusseldorf": [51.2217, 6.7762], "Nuremberg": [49.4521, 11.0767],
     "Krakow": [50.0647, 19.9450], "Warsaw": [52.2297, 21.0122], "Bratislava": [48.1486, 17.1077],
     "Ljubljana": [46.0569, 14.5058], "Dubrovnik": [42.6507, 18.0944], "Split": [43.5081, 16.4402],
     "Bruges": [51.2093, 3.2247], "Ghent": [51.0543, 3.7174], "Antwerp": [51.2194, 4.4025],
     "Rotterdam": [51.9244, 4.4777], "Luxembourg": [49.6117, 6.1319],
-    "Gothenburg": [57.7089, 11.9746], "Tallinn": [59.4370, 24.7536],
     "Hallstatt": [47.5622, 13.6493], "Graz": [47.0707, 15.4395],
     "Amalfi": [40.6340, 14.6025], "Positano": [40.6281, 14.4850], "Pompeii": [40.7461, 14.5019],
     "Venice Mestre": [45.4847, 12.2386],
-    "Tromso": [69.6489, 18.9551], "Kiruna": [67.8558, 20.2253], "Abisko": [68.3493, 18.8306],
-    "Narvik": [68.4385, 17.4279], "Alta": [69.9689, 23.2716], "Rovaniemi": [66.5039, 25.7294],
-    "Lofoten": [68.1566, 13.9989], "Flam": [60.8633, 7.1159], "Geiranger": [62.1008, 7.2050],
+    # Arctic / Scandinavia — explicit Unicode and ASCII variants
+    "Tromso": [69.6489, 18.9551],
+    "Tromsø": [69.6489, 18.9551],
+    "Kiruna": [67.8558, 20.2253],
+    "Abisko": [68.3493, 18.8306],
+    "Narvik": [68.4385, 17.4279],
+    "Alta": [69.9689, 23.2716],
+    "Rovaniemi": [66.5039, 25.7294],
+    "Lofoten": [68.1566, 13.9989],
+    "Flam": [60.8633, 7.1159],
+    "Flåm": [60.8633, 7.1159],
+    "Geiranger": [62.1008, 7.2050],
     "Trondheim": [63.4305, 10.3951],
-    "Cheltenham": [51.8994, -2.0783], "Barnstaple": [51.0803, -4.0588], "Truro": [50.2632, -5.0510],
-    "Plymouth": [50.3755, -4.1427], "Exeter": [50.7184, -3.5339], "Bournemouth": [50.7192, -1.8808],
-    "Bristol": [51.4545, -2.5879], "Cambridge": [52.2053, 0.1218], "Oxford": [51.7520, -1.2577],
-    "Bath": [51.3758, -2.3599], "York": [53.9600, -1.0873], "Cardiff": [51.4816, -3.1791],
-    "Belfast": [54.5973, -5.9301], "Aberdeen": [57.1497, -2.0943], "Stirling": [56.1165, -3.9369],
-    "Perth": [56.3950, -3.4310], "Dundee": [56.4620, -2.9707], "Oban": [56.4153, -5.4714],
-    "Pitlochry": [56.7044, -3.7327], "St Andrews": [56.3398, -2.7967],
+    "Akureyri": [65.6826, -18.0913],
+    "Hofn": [64.2533, -15.2080],
+    "Vik": [63.4189, -18.9940],
+    # UK
+    "Cheltenham": [51.8994, -2.0783], "Barnstaple": [51.0803, -4.0588],
+    "Truro": [50.2632, -5.0510], "Plymouth": [50.3755, -4.1427],
+    "Exeter": [50.7184, -3.5339], "Bournemouth": [50.7192, -1.8808],
+    "Bristol": [51.4545, -2.5879], "Bath": [51.3758, -2.3599],
+    "Belfast": [54.5973, -5.9301], "Aberdeen": [57.1497, -2.0943],
+    "Oban": [56.4153, -5.4714], "St Andrews": [56.3398, -2.7967],
+    "Dusseldorf": [51.2217, 6.7762],
+    "Aix en Provence": [43.5298, 5.4475],
+    "Maastricht": [50.8514, 5.6910],
 }
 
 COMPOUND_NAMES = {
     'East Europe', 'Eastern Europe', 'Western Europe', 'Central Europe', 'Western Central Europe',
     'Costa Smeralda', 'Cala Gonone', 'Fort William', 'San Sebastian', 'Czech Republic',
     'Venice Mestre', 'Isle of Skye', 'Lake District', 'Stratford upon Avon',
+    'Aix en Provence',
 }
 
 GEO_BLOCK = """<script>
@@ -146,7 +162,6 @@ BROCHURE_CSS = """
 .card-description{font-size:0.81em;color:#666;font-style:italic;line-height:1.4;}
 .cities-list{font-size:0.79em;color:#555;}
 .price-tag{font-size:0.88em;color:#2e7d32;font-weight:700;margin-top:auto;padding-top:6px;}
-
 .card-map{width:200px;min-width:200px;border-left:1px solid #ebebeb;position:relative;overflow:hidden;}
 .map-inner{width:100%;height:100%;min-height:210px;}
 .leaflet-tooltip.city-tip{background:transparent!important;border:none!important;box-shadow:none!important;font-size:9px;font-weight:700;color:#1a1a2e;white-space:nowrap;padding:0;text-shadow:-1px -1px 0 white,1px -1px 0 white,-1px 1px 0 white,1px 1px 0 white;}
@@ -183,14 +198,14 @@ NAV = """<nav class="top-nav"><div class="nav-container">
 def load_coords_cache():
     cache = dict(SEED_COORDS)
     if os.path.exists(COORDS_CACHE_PATH):
-        with open(COORDS_CACHE_PATH, 'r') as f:
+        with open(COORDS_CACHE_PATH, 'r', encoding='utf-8') as f:
             cache.update(json.load(f))
     return cache
 
 def save_coords_cache(cache):
     to_save = {k: v for k, v in cache.items() if k not in SEED_COORDS}
-    with open(COORDS_CACHE_PATH, 'w') as f:
-        json.dump(to_save, f, indent=2)
+    with open(COORDS_CACHE_PATH, 'w', encoding='utf-8') as f:
+        json.dump(to_save, f, indent=2, ensure_ascii=False)
 
 def geocode_city(city_name):
     for query in [city_name, f"{city_name} Europe"]:
@@ -212,10 +227,12 @@ def geocode_city(city_name):
 def get_coords(city_name, cache):
     if city_name in cache:
         return cache[city_name]
+    # Case-insensitive match
     city_lower = city_name.lower()
     for k, v in cache.items():
         if k.lower() == city_lower:
             return v
+    # Partial match
     for k, v in cache.items():
         if v and (city_lower in k.lower() or k.lower() in city_lower):
             return v
@@ -266,8 +283,8 @@ def make_title(filename):
     rest = re.sub(r'\b(Private|Regular|Self.?[Dd]rive)\b', '', rest, flags=re.IGNORECASE)
     rest = re.sub(r'\d{4}-\d{2,4}', '', rest)
     rest = re.sub(r'Europe\s+Incoming', '', rest, flags=re.IGNORECASE)
+    rest = re.sub(r'\s*&\s*', ' ', rest)  # Remove & before splitting
     rest = re.sub(r'\s+', ' ', rest).strip().strip('-').strip()
-    rest = re.sub(r'\s*&\s*', ' ', rest).strip()
     return f"{duration} {smart_destination(rest.split())}".strip()
 
 
@@ -320,13 +337,12 @@ def extract_price(txt, lines):
     if not ti:
         return (None, currency)
 
-    # Detect if table has Triple column (city break format)
+    # Detect Triple column (city break format)
     has_triple = any('Triple' in l for l in lines[max(0, ti-3):ti+3])
 
     ep = []
     skip_count = 0
     for l in lines[ti:ti + 50]:
-        # Stop at new section headers
         if re.search(r'Pre.?Post|Sample Hotels|Sample Tours|Terms\b|Hotels\b', l, re.IGNORECASE):
             break
         if re.search(r'Extension', l, re.IGNORECASE):
@@ -338,30 +354,29 @@ def extract_price(txt, lines):
                 skip_count -= 1
                 continue
             val = int(m.group(1).replace(',', ''))
-            if val >= 200:  # filter out pre/post night extras (69, 131 etc)
+            if val >= 200:
                 ep.append(val)
 
     if has_triple:
-        # 4 cols: Single=0, Twin=1, Triple=2, Child=3
         twins = ep[1::4] if len(ep) >= 4 else []
     else:
-        # 3 cols: Single=0, Twin=1, Child=2
         twins = ep[1::3] if len(ep) >= 3 else ep[1:2] if len(ep) >= 2 else []
 
     return (min(twins), currency) if twins else (None, currency)
 
 def extract_cities(txt):
     """
-    Extract overnight cities. Handles:
-    - "Overnight in Amsterdam"  (multi-country style)
-    - "Overnight Amsterdam"     (city break style)
+    Extract overnight cities. Uses \w to handle non-ASCII chars like ø, å, ü etc.
+    Tries 'Overnight in X' first (multi-country style),
+    falls back to 'Overnight X' (city break style).
     """
-    # Try "Overnight in X" first
-    cities = re.findall(r'Overnight in ([A-Z][a-zA-Z\s]+?)[\.\n,]', txt)
+    # Pattern 1: "Overnight in Tromsø" — \w handles Unicode
+    cities = re.findall(r'Overnight in ([\w][\w\s\-]+?)[\.\n,]', txt)
+    cities = [c.strip() for c in cities if len(c.strip()) > 1]
     if not cities:
-        # Fall back to "Overnight X"
-        cities = re.findall(r'Overnight\s+([A-Z][a-zA-Z]+)', txt)
-    return list(dict.fromkeys([c.strip() for c in cities]))[:6]
+        # Pattern 2: "Overnight Amsterdam" — single word only
+        cities = re.findall(r'Overnight\s+([\w]+)', txt)
+    return list(dict.fromkeys(cities))[:6]
 
 def extract_pdf_data(pdf_path, filename):
     r = {
@@ -374,8 +389,13 @@ def extract_pdf_data(pdf_path, filename):
     if dur:
         r["duration"] = f"{dur.group(1)} nights / {dur.group(2)} days"
     else:
-        d = re.search(r'(\d+)\s*days?', name, re.IGNORECASE)
-        if d: r["duration"] = f"{d.group(1)} days"
+        d = re.search(r'(\d+)\s*[Nn](?:ights?)?', name)
+        if d:
+            r["duration"] = f"{d.group(1)} nights"
+        else:
+            d2 = re.search(r'(\d+)\s*days?', name, re.IGNORECASE)
+            if d2: r["duration"] = f"{d2.group(1)} days"
+
     t = re.search(r'(Self.?[Dd]rive|Private|Regular)', name)
     if t: r["tour_type"] = t.group(1).replace('-', ' ').title()
 
@@ -391,6 +411,7 @@ def extract_pdf_data(pdf_path, filename):
         for d in all_dates_raw:
             parsed = parse_date(d)
             if parsed: valid_dates.append((d, parsed))
+
         if valid_dates:
             strs = [v[0] for v in valid_dates]
             objs = [v[1] for v in valid_dates]
@@ -441,10 +462,13 @@ def extract_itinerary(pdf_path):
 def generate_description(cities, region, tour_type, season, pdf_path, cached_desc=None):
     FALLBACK_MARKERS = [
         "Curated", "The best of", "elegance meets", "unmissable stops",
-        "handpicked experiences", "curated and ready"
+        "handpicked experiences", "curated and ready",
+        "Two nights in", "history, culture and local highlights",
+        "Handpicked", "your route, your pace",
+        "with sightseeing, canal cruise and transfers",
     ]
     if cached_desc and not any(m in cached_desc for m in FALLBACK_MARKERS):
-        print(f"    cached: {cached_desc}")
+        print(f"    cached: {cached_desc[:60]}...")
         return cached_desc
 
     itinerary = extract_itinerary(pdf_path)
@@ -472,8 +496,8 @@ def generate_description(cities, region, tour_type, season, pdf_path, cached_des
                 "Good examples: "
                 "'Canal cruises, Anne Frank's hideaway and golden-hour cycling.' "
                 "'Acropolis at dawn, taverna nights and Aegean sea light.' "
-                "'Baroque palaces, thermal baths and Danube bridge views.' "
-                "'Cliffside drives, Bronze Age towers and hidden sea caves.'"
+                "'Dog sleds, ice art suites and Aurora hunts deep in Swedish Lapland.' "
+                "'Whale watching fjords, reindeer camp dinners and Northern Lights over the water.'"
             )},
             {"role": "user", "content": prompt}
         ],
@@ -497,18 +521,30 @@ def generate_description(cities, region, tour_type, season, pdf_path, cached_des
 
 def _fallback_desc(cities, region, tour_type):
     tt = (tour_type or "").lower()
+    # Region-specific fallbacks
+    if region == "Scandinavia & Iceland":
+        if "tromso" in str(cities).lower() or "tromsø" in str(cities).lower():
+            return "Northern Lights, whale watching and Sámi reindeer culture in Arctic Norway."
+        if "kiruna" in str(cities).lower() and "abisko" in str(cities).lower():
+            return "Dog sleds, ice art suites and the Aurora Sky Station across Swedish Lapland."
+        if "kiruna" in str(cities).lower():
+            return "Dog sledding, ICEHOTEL and a Northern Lights chase in Swedish Lapland."
+        if "rovaniemi" in str(cities).lower():
+            return "Reindeer safaris, husky experiences and guaranteed Northern Lights from Santa's hometown."
+        if "reykjavik" in str(cities).lower():
+            return "Golden Circle, black beaches and the Blue Lagoon on Iceland's ring road."
     if not cities:
         if "self" in tt: return f"Self-drive freedom through {region} at your own pace."
         if "private" in tt: return f"Private guided {region} experience, tailored for your group."
-        return f"Handpicked {region} itinerary with accommodation and transfers."
+        return f"Handpicked {region} package with curated accommodation and transfers."
     if len(cities) == 1:
-        if "self" in tt: return f"Self-drive city break in {cities[0]} — explore freely."
-        if "private" in tt: return f"Private {cities[0]} experience with dedicated guide and transfers."
-        return f"Two nights in {cities[0]} with sightseeing, canal cruise and transfers."
+        if "self" in tt: return f"Self-drive city break in {cities[0]} — explore at your own pace."
+        if "private" in tt: return f"Private {cities[0]} city experience with dedicated guide and transfers."
+        return f"Three days in {cities[0]} — iconic sights, local food and a city tour included."
     elif len(cities) == 2:
         if "self" in tt: return f"Self-drive from {cities[0]} to {cities[1]} — roads, views, freedom."
-        if "private" in tt: return f"Private tour: {cities[0]} to {cities[1]} with dedicated transport."
-        return f"From {cities[0]} to {cities[1]} — history, culture and local highlights."
+        if "private" in tt: return f"Private guided tour: {cities[0]} to {cities[1]} with dedicated transport."
+        return f"From {cities[0]} to {cities[1]} — landmarks, local character and curated transfers."
     else:
         stops = ', '.join(cities[:-1]) + ' and ' + cities[-1]
         if "self" in tt: return f"Self-drive through {stops} — your route, your pace."
@@ -662,7 +698,7 @@ def build_multicountry_index(region_cards_html, logo_href, search_js):
 def load_existing_packages(packages_path):
     existing = {}
     if os.path.exists(packages_path):
-        with open(packages_path, 'r') as f:
+        with open(packages_path, 'r', encoding='utf-8') as f:
             for pkg in json.load(f).get("packages", []):
                 existing[pkg.get("folder", "") + "/" + pkg.get("filename", "")] = pkg
     return existing
@@ -675,6 +711,19 @@ def update_packages_json(packages_path, all_found, desc_cache):
         if key in existing:
             pkg = existing[key].copy()
             pkg["description"] = desc_cache.get(key, pkg.get("description", ""))
+            # Update cities/duration/price from fresh PDF extraction if they were empty
+            pd = item["pdf_data"]
+            if not pkg.get("cities") and pd.get("cities"):
+                pkg["cities"] = pd["cities"]
+            if not pkg.get("duration") and pd.get("duration"):
+                pkg["duration"] = pd["duration"]
+            if pd.get("price_twin") and not pkg.get("price_twin"):
+                pkg["price_twin"] = pd["price_twin"]
+                pkg["currency"] = pd.get("currency", "€")
+            if pd.get("valid_till"):
+                pkg["valid_till"] = pd["valid_till"]
+                pkg["is_expired"] = pd.get("is_expired", False)
+                pkg["season"] = pd.get("season", pkg.get("season", "all-year"))
             new_pkgs.append(pkg)
         else:
             pid = re.sub(r'[^a-z0-9]', '-', item["filename"].lower().replace('.pdf', ''))[:30]
@@ -685,12 +734,12 @@ def update_packages_json(packages_path, all_found, desc_cache):
                 "cities": pd.get("cities", []), "duration": pd.get("duration", ""),
                 "type": pd.get("tour_type", ""), "season": pd.get("season", "all-year"),
                 "price_twin": pd.get("price_twin"), "currency": pd.get("currency", "€"),
-                "valid_till": pd.get("valid_till"),
+                "valid_till": pd.get("valid_till"), "is_expired": pd.get("is_expired", False),
                 "description": desc_cache.get(key, ""),
                 "tags": pd.get("cities", [])
             })
-    with open(packages_path, 'w') as f:
-        json.dump({"packages": new_pkgs}, f, indent=2)
+    with open(packages_path, 'w', encoding='utf-8') as f:
+        json.dump({"packages": new_pkgs}, f, indent=2, ensure_ascii=False)
     print(f"  packages.json: {len(new_pkgs)} entries")
 
 
@@ -730,6 +779,8 @@ def main():
             pkg_key = folder_rel + "/" + pdf
             pdf_data = extract_pdf_data(os.path.join(folder_abs, pdf), pdf)
             title = make_title(pdf)
+
+            # Use cached description if it's a good one
             cached_desc = existing_pkgs.get(pkg_key, {}).get("description", None)
             desc = generate_description(
                 pdf_data.get("cities", []), config["region"],
