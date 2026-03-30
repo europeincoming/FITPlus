@@ -97,6 +97,17 @@ if(['US','CA','AU','NZ'].includes(d.country)){document.body.innerHTML='<div styl
   </div>
   <div class="card-map"><div id="map_iceland_self_drive_1" class="map-inner"></div></div>
 </a>
+<a href="Kiruna 4N_Regular Winter.pdf" class="brochure-card" target="_blank">
+  <div class="card-info">
+    <div class="card-title">Kiruna 4N Regular Winter</div>
+    <div class="tour-type">Regular</div>
+    <div class="card-pills"><span class="pill pill-winter">❄️ Winter</span><span class="pill pill-valid">✓ Valid till Mar 2027</span></div>
+    <div class="card-description">Two nights in Kiruna with sightseeing, canal cruise and transfers.</div>
+    <div class="cities-list">📍 Kiruna</div>
+    <div class="price-tag">From €1,351 pp (twin)</div>
+  </div>
+  <div class="card-map"><div id="map_kiruna_4n_regular__2" class="map-inner"></div></div>
+</a>
 <a href="Norway Nutshell_Regular 5 nights, 6 days.pdf" class="brochure-card" target="_blank">
   <div class="card-info">
     <div class="card-title">Norway Nutshell Regular 5 nights, 6 days</div>
@@ -106,7 +117,51 @@ if(['US','CA','AU','NZ'].includes(d.country)){document.body.innerHTML='<div styl
     <div class="cities-list">📍 Oslo · Bergen</div>
     <div class="price-tag">From €990 pp (twin)</div>
   </div>
-  <div class="card-map"><div id="map_norway_nutshell_re_2" class="map-inner"></div></div>
+  <div class="card-map"><div id="map_norway_nutshell_re_3" class="map-inner"></div></div>
+</a>
+<a href="Rovaniemi 4N_Regular Winter.pdf" class="brochure-card" target="_blank">
+  <div class="card-info">
+    <div class="card-title">Rovaniemi 4N Regular Winter</div>
+    <div class="tour-type">Regular</div>
+    <div class="card-pills"><span class="pill pill-winter">❄️ Winter</span><span class="pill pill-valid">✓ Valid till Mar 2027</span></div>
+    <div class="card-description">Two nights in Rovaniemi with sightseeing, canal cruise and transfers.</div>
+    <div class="cities-list">📍 Rovaniemi</div>
+    <div class="price-tag">From €1,188 pp (twin)</div>
+  </div>
+  <div class="card-map"><div id="map_rovaniemi_4n_regul_4" class="map-inner"></div></div>
+</a>
+<a href="Swedish Lapland 7N_Regular Winter.pdf" class="brochure-card" target="_blank">
+  <div class="card-info">
+    <div class="card-title">Swedish Lapland 7N Regular Winter</div>
+    <div class="tour-type">Regular</div>
+    <div class="card-pills"><span class="pill pill-winter">❄️ Winter</span><span class="pill pill-valid">✓ Valid till Mar 2027</span></div>
+    <div class="card-description">From Kiruna to Abisko — history, culture and local highlights.</div>
+    <div class="cities-list">📍 Kiruna · Abisko</div>
+    <div class="price-tag">From €2,087 pp (twin)</div>
+  </div>
+  <div class="card-map"><div id="map_swedish_lapland_7n_5" class="map-inner"></div></div>
+</a>
+<a href="Tromso 4N_Regular Winter.pdf" class="brochure-card" target="_blank">
+  <div class="card-info">
+    <div class="card-title">Tromso 4N Regular Winter</div>
+    <div class="tour-type">Regular</div>
+    <div class="card-pills"><span class="pill pill-winter">❄️ Winter</span><span class="pill pill-valid">✓ Valid till Mar 2027</span></div>
+    <div class="card-description">Handpicked Scandinavia & Iceland itinerary with accommodation and transfers.</div>
+    
+    <div class="price-tag">From €1,726 pp (twin)</div>
+  </div>
+  
+</a>
+<a href="Tromso 7N_Regular Winter.pdf" class="brochure-card" target="_blank">
+  <div class="card-info">
+    <div class="card-title">Tromso 7N Regular Winter</div>
+    <div class="tour-type">Regular</div>
+    <div class="card-pills"><span class="pill pill-winter">❄️ Winter</span><span class="pill pill-valid">✓ Valid till Mar 2027</span></div>
+    <div class="card-description">Handpicked Scandinavia & Iceland itinerary with accommodation and transfers.</div>
+    
+    <div class="price-tag">From €2,599 pp (twin)</div>
+  </div>
+  
 </a>
 </div>
 <footer><p>All packages are available for download in PDF format</p></footer>
@@ -145,13 +200,61 @@ if(['US','CA','AU','NZ'].includes(d.country)){document.body.innerHTML='<div styl
   });
 })();
 (function(){
+  var pts=[[67.8558, 20.2253, "Kiruna"]];
+  if(!pts.length) return;
+  var lats=pts.map(function(p){return p[0];});
+  var lngs=pts.map(function(p){return p[1];});
+  var pad=0.6;
+  var bounds=[[Math.min.apply(null,lats)-pad,Math.min.apply(null,lngs)-pad],[Math.max.apply(null,lats)+pad,Math.max.apply(null,lngs)+pad]];
+  var map=L.map('map_kiruna_4n_regular__2',{zoomControl:false,scrollWheelZoom:false,dragging:false,touchZoom:false,doubleClickZoom:false,boxZoom:false,keyboard:false,attributionControl:false});
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{maxZoom:19,attribution:''}).addTo(map);
+  map.fitBounds(bounds,{padding:[20,20]});
+  if(pts.length>1){var ll=pts.map(function(p){return[p[0],p[1]];});L.polyline(ll,{color:'#2196F3',weight:2.5,dashArray:'6,4',opacity:0.85}).addTo(map);}
+  pts.forEach(function(p,i){
+    var color=i===0?'#e53935':(i===pts.length-1?'#43a047':'#1565c0');
+    L.circleMarker([p[0],p[1]],{radius:5,fillColor:color,color:'white',weight:2,fillOpacity:1}).addTo(map).bindTooltip(p[2],{permanent:true,direction:'top',className:'city-tip',offset:[0,-5]});
+  });
+})();
+(function(){
   var pts=[[59.9139, 10.7522, "Oslo"], [60.3913, 5.3221, "Bergen"]];
   if(!pts.length) return;
   var lats=pts.map(function(p){return p[0];});
   var lngs=pts.map(function(p){return p[1];});
   var pad=0.6;
   var bounds=[[Math.min.apply(null,lats)-pad,Math.min.apply(null,lngs)-pad],[Math.max.apply(null,lats)+pad,Math.max.apply(null,lngs)+pad]];
-  var map=L.map('map_norway_nutshell_re_2',{zoomControl:false,scrollWheelZoom:false,dragging:false,touchZoom:false,doubleClickZoom:false,boxZoom:false,keyboard:false,attributionControl:false});
+  var map=L.map('map_norway_nutshell_re_3',{zoomControl:false,scrollWheelZoom:false,dragging:false,touchZoom:false,doubleClickZoom:false,boxZoom:false,keyboard:false,attributionControl:false});
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{maxZoom:19,attribution:''}).addTo(map);
+  map.fitBounds(bounds,{padding:[20,20]});
+  if(pts.length>1){var ll=pts.map(function(p){return[p[0],p[1]];});L.polyline(ll,{color:'#2196F3',weight:2.5,dashArray:'6,4',opacity:0.85}).addTo(map);}
+  pts.forEach(function(p,i){
+    var color=i===0?'#e53935':(i===pts.length-1?'#43a047':'#1565c0');
+    L.circleMarker([p[0],p[1]],{radius:5,fillColor:color,color:'white',weight:2,fillOpacity:1}).addTo(map).bindTooltip(p[2],{permanent:true,direction:'top',className:'city-tip',offset:[0,-5]});
+  });
+})();
+(function(){
+  var pts=[[66.5039, 25.7294, "Rovaniemi"]];
+  if(!pts.length) return;
+  var lats=pts.map(function(p){return p[0];});
+  var lngs=pts.map(function(p){return p[1];});
+  var pad=0.6;
+  var bounds=[[Math.min.apply(null,lats)-pad,Math.min.apply(null,lngs)-pad],[Math.max.apply(null,lats)+pad,Math.max.apply(null,lngs)+pad]];
+  var map=L.map('map_rovaniemi_4n_regul_4',{zoomControl:false,scrollWheelZoom:false,dragging:false,touchZoom:false,doubleClickZoom:false,boxZoom:false,keyboard:false,attributionControl:false});
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{maxZoom:19,attribution:''}).addTo(map);
+  map.fitBounds(bounds,{padding:[20,20]});
+  if(pts.length>1){var ll=pts.map(function(p){return[p[0],p[1]];});L.polyline(ll,{color:'#2196F3',weight:2.5,dashArray:'6,4',opacity:0.85}).addTo(map);}
+  pts.forEach(function(p,i){
+    var color=i===0?'#e53935':(i===pts.length-1?'#43a047':'#1565c0');
+    L.circleMarker([p[0],p[1]],{radius:5,fillColor:color,color:'white',weight:2,fillOpacity:1}).addTo(map).bindTooltip(p[2],{permanent:true,direction:'top',className:'city-tip',offset:[0,-5]});
+  });
+})();
+(function(){
+  var pts=[[67.8558, 20.2253, "Kiruna"], [68.3493, 18.8306, "Abisko"]];
+  if(!pts.length) return;
+  var lats=pts.map(function(p){return p[0];});
+  var lngs=pts.map(function(p){return p[1];});
+  var pad=0.6;
+  var bounds=[[Math.min.apply(null,lats)-pad,Math.min.apply(null,lngs)-pad],[Math.max.apply(null,lats)+pad,Math.max.apply(null,lngs)+pad]];
+  var map=L.map('map_swedish_lapland_7n_5',{zoomControl:false,scrollWheelZoom:false,dragging:false,touchZoom:false,doubleClickZoom:false,boxZoom:false,keyboard:false,attributionControl:false});
   L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{maxZoom:19,attribution:''}).addTo(map);
   map.fitBounds(bounds,{padding:[20,20]});
   if(pts.length>1){var ll=pts.map(function(p){return[p[0],p[1]];});L.polyline(ll,{color:'#2196F3',weight:2.5,dashArray:'6,4',opacity:0.85}).addTo(map);}
