@@ -103,6 +103,8 @@ COMPOUND_NAMES = {
     'Costa Smeralda', 'Cala Gonone', 'Fort William', 'San Sebastian', 'Czech Republic',
     'Venice Mestre', 'Isle of Skye', 'Lake District', 'Stratford upon Avon',
     'Aix en Provence',
+    'Swedish Lapland',
+    'Norway Nutshell',
 }
 
 GEO_BLOCK = """<script>
@@ -264,26 +266,46 @@ def smart_destination(words):
 def make_title(filename):
     name = filename.replace('.pdf', '').replace('_', ' ')
     name = re.sub(r'\s+', ' ', name).strip()
+    # Pattern 1: "6 nights, 7 days Destination"
     m = re.search(r'(\d+)\s*nights?,\s*(\d+)\s*days?\s+(.+)', name, re.IGNORECASE)
     if m:
         duration = f"{m.group(1)} nights, {m.group(2)} days"
         rest = m.group(3).strip()
     else:
-        m2 = re.search(r'(\d+)\s*nights?\s*[/]?\s*(\d+)\s*days?', name, re.IGNORECASE)
+        # Pattern 2: "Destination 6 nights, 7 days" or "Destination_6 nights 7 days"
+        m2 = re.search(r'(\d+)\s*nights?,\s*(\d+)\s*days?', name, re.IGNORECASE)
         if m2:
             duration = f"{m2.group(1)} nights, {m2.group(2)} days"
-            rest = name[m2.end():].strip()
+            before = name[:m2.start()].strip()
+            after = name[m2.end():].strip()
+            rest = (before + " " + after).strip()
         else:
-            m3 = re.search(r'(\d+)\s*[Dd]ays?\s+(.+)', name, re.IGNORECASE)
-            if m3:
-                duration = f"{m3.group(1)} days"
-                rest = m3.group(2).strip()
+            # Pattern 3: "X nights / Y days" with slash
+            m2b = re.search(r'(\d+)\s*nights?\s*[/]\s*(\d+)\s*days?', name, re.IGNORECASE)
+            if m2b:
+                duration = f"{m2b.group(1)} nights, {m2b.group(2)} days"
+                before = name[:m2b.start()].strip()
+                after = name[m2b.end():].strip()
+                rest = (before + " " + after).strip()
             else:
-                return name
+                # Pattern 4: "4N" shorthand — derive days as nights+1
+                m2c = re.search(r'(\d+)\s*[Nn]\b', name)
+                if m2c:
+                    nights = int(m2c.group(1))
+                    duration = f"{nights} nights, {nights+1} days"
+                    rest = (name[:m2c.start()] + name[m2c.end():]).strip()
+                else:
+                    m3 = re.search(r'(\d+)\s*[Dd]ays?\s+(.+)', name, re.IGNORECASE)
+                    if m3:
+                        duration = f"{m3.group(1)} days"
+                        rest = m3.group(2).strip()
+                    else:
+                        return name
     rest = re.sub(r'\b(Private|Regular|Self.?[Dd]rive)\b', '', rest, flags=re.IGNORECASE)
+    rest = re.sub(r'\b(Winter|Summer)\b', '', rest, flags=re.IGNORECASE)
     rest = re.sub(r'\d{4}-\d{2,4}', '', rest)
     rest = re.sub(r'Europe\s+Incoming', '', rest, flags=re.IGNORECASE)
-    rest = re.sub(r'\s*&\s*', ' ', rest)  # Remove & before splitting
+    rest = re.sub(r'\s*&\s*', ' ', rest)
     rest = re.sub(r'\s+', ' ', rest).strip().strip('-').strip()
     return f"{duration} {smart_destination(rest.split())}".strip()
 
@@ -389,9 +411,11 @@ def extract_pdf_data(pdf_path, filename):
     if dur:
         r["duration"] = f"{dur.group(1)} nights / {dur.group(2)} days"
     else:
-        d = re.search(r'(\d+)\s*[Nn](?:ights?)?', name)
+        # Handle "4N" or "7N" style filenames — derive days as nights+1
+        d = re.search(r'(\d+)\s*[Nn](?:ights?)?\b', name)
         if d:
-            r["duration"] = f"{d.group(1)} nights"
+            nights = int(d.group(1))
+            r["duration"] = f"{nights} nights / {nights+1} days"
         else:
             d2 = re.search(r'(\d+)\s*days?', name, re.IGNORECASE)
             if d2: r["duration"] = f"{d2.group(1)} days"
