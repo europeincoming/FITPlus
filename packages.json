@@ -989,22 +989,6 @@
       "description": "Self-drive through Reykjavik, Akureyri, Hofn and Vik \u2014 your route, your pace."
     },
     {
-      "id": "kiruna-regular-4-nights--5-day",
-      "name": "Kiruna Regular 4 Nights, 5 Days",
-      "filename": "Kiruna_Regular_4 Nights, 5 Days.pdf",
-      "region": "Scandinavia & Iceland",
-      "folder": "multi-country/scandinavia-iceland",
-      "cities": [
-        "Kiruna"
-      ],
-      "duration": "5 days",
-      "type": "Regular",
-      "tags": [
-        "Kiruna"
-      ],
-      "description": "Two nights in Kiruna with sightseeing, canal cruise and transfers."
-    },
-    {
       "id": "norway-nutshell-regular-5-nigh",
       "name": "Norway Nutshell Regular 5 nights, 6 days",
       "filename": "Norway Nutshell_Regular 5 nights, 6 days.pdf",
@@ -1021,48 +1005,6 @@
         "Bergen"
       ],
       "description": "From Oslo to Bergen \u2014 history, culture and local highlights."
-    },
-    {
-      "id": "swedish-lapland-regular-7-nigh",
-      "name": "Swedish Lapland Regular 7 Nights, 8 Days",
-      "filename": "Swedish Lapland_Regular_7 Nights, 8 Days.pdf",
-      "region": "Scandinavia & Iceland",
-      "folder": "multi-country/scandinavia-iceland",
-      "cities": [
-        "Kiruna",
-        "Abisko"
-      ],
-      "duration": "8 days",
-      "type": "Regular",
-      "tags": [
-        "Kiruna",
-        "Abisko"
-      ],
-      "description": "From Kiruna to Abisko \u2014 history, culture and local highlights."
-    },
-    {
-      "id": "tromso--regular-4-nights--5-da",
-      "name": "Tromso Regular 4 Nights, 5 Days",
-      "filename": "Tromso _Regular_4 Nights, 5 Days.pdf",
-      "region": "Scandinavia & Iceland",
-      "folder": "multi-country/scandinavia-iceland",
-      "cities": [],
-      "duration": "5 days",
-      "type": "Regular",
-      "tags": [],
-      "description": "Gateway to the Arctic: husky sledding, whale watching, and aurora chasing."
-    },
-    {
-      "id": "tromso-regular-7-nights--8-day",
-      "name": "Tromso Regular 7 Nights, 8 Days",
-      "filename": "Tromso_Regular_7 Nights, 8 Days.pdf",
-      "region": "Scandinavia & Iceland",
-      "folder": "multi-country/scandinavia-iceland",
-      "cities": [],
-      "duration": "8 days",
-      "type": "Regular",
-      "tags": [],
-      "description": "Slow Arctic Living: 7 nights to discover Troms\u00f8"
     },
     {
       "id": "6-nights--7-days-madbcn-privat",
