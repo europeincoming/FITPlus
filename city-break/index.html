@@ -46,7 +46,6 @@ footer{text-align:center;margin-top:60px;padding:32px 0;color:#9e9e9e;font-size:
 .card-description{font-size:0.81em;color:#666;font-style:italic;line-height:1.4;}
 .cities-list{font-size:0.79em;color:#555;}
 .price-tag{font-size:0.88em;color:#2e7d32;font-weight:700;margin-top:auto;padding-top:6px;}
-
 .card-map{width:200px;min-width:200px;border-left:1px solid #ebebeb;position:relative;overflow:hidden;}
 .map-inner{width:100%;height:100%;min-height:210px;}
 .leaflet-tooltip.city-tip{background:transparent!important;border:none!important;box-shadow:none!important;font-size:9px;font-weight:700;color:#1a1a2e;white-space:nowrap;padding:0;text-shadow:-1px -1px 0 white,1px -1px 0 white,-1px 1px 0 white,1px 1px 0 white;}
@@ -312,7 +311,7 @@ if(['US','CA','AU','NZ'].includes(d.country)){document.body.innerHTML='<div styl
     
     <div class="card-pills"><span class="pill pill-duration">🕐 3 days</span><span class="pill pill-allyear">🌍 All Year Round</span><span class="pill pill-valid">✓ Valid till Nov 2026</span></div>
     <div class="card-description">Chapel Bridge reflections, Mount Titlis snow and a lake framed by peaks on every side.</div>
-    <div class="cities-list">📍 Lucerne</div>
+    <div class="cities-list">📍 Lucerne · in</div>
     <div class="price-tag">From €207 pp (twin)</div>
   </div>
   <div class="card-map"><div id="map_3_days_lucerne_202_21" class="map-inner"></div></div>
@@ -823,7 +822,7 @@ if(['US','CA','AU','NZ'].includes(d.country)){document.body.innerHTML='<div styl
   });
 })();
 (function(){
-  var pts=[[47.0502, 8.3093, "Lucerne"]];
+  var pts=[[47.0502, 8.3093, "Lucerne"], [52.52, 13.405, "in"]];
   if(!pts.length) return;
   var lats=pts.map(function(p){return p[0];});
   var lngs=pts.map(function(p){return p[1];});

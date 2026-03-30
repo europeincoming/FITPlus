@@ -16,7 +16,12 @@
         "Canals",
         "Museums"
       ],
-      "description": "Canal cruises, Rijksmuseum masterpieces and golden-hour cycling through the Jordaan."
+      "description": "Canal cruises, Rijksmuseum masterpieces and golden-hour cycling through the Jordaan.",
+      "price_twin": 318,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "city-002",
@@ -34,7 +39,12 @@
         "Ancient History",
         "Acropolis"
       ],
-      "description": "Acropolis at dawn, ancient agora and rooftop taverna nights above the city lights."
+      "description": "Acropolis at dawn, ancient agora and rooftop taverna nights above the city lights.",
+      "price_twin": 251,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "city-003",
@@ -52,7 +62,12 @@
         "Mediterranean",
         "Gaudi"
       ],
-      "description": "Gaud\u00ed's unfinished cathedral, Gothic Quarter labyrinth and Barceloneta seafood evenings."
+      "description": "Gaudí's unfinished cathedral, Gothic Quarter labyrinth and Barceloneta seafood evenings.",
+      "price_twin": 281,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "city-004",
@@ -69,7 +84,12 @@
         "Norway",
         "Fjords"
       ],
-      "description": "Bryggen's painted warehouses, the Fl\u00f8ibanen funicular and fresh fish on the harbour quay."
+      "description": "Bryggen's painted warehouses, the Fløibanen funicular and fresh fish on the harbour quay.",
+      "price_twin": 243,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "city-005",
@@ -86,7 +106,12 @@
         "Germany",
         "History"
       ],
-      "description": "Cold War checkpoints, world-class museum island and a nightlife scene that never really ends."
+      "description": "Cold War checkpoints, world-class museum island and a nightlife scene that never really ends.",
+      "price_twin": 280,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "city-006",
@@ -103,7 +128,12 @@
         "Belgium",
         "Grand Place"
       ],
-      "description": "Art Nouveau architecture, the Grand Place at midnight and Belgium's finest chocolate and beer."
+      "description": "Art Nouveau architecture, the Grand Place at midnight and Belgium's finest chocolate and beer.",
+      "price_twin": 257,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "city-007",
@@ -121,7 +151,12 @@
         "Danube",
         "Thermal Baths"
       ],
-      "description": "Baroque thermal baths, Danube bridge views and a ruin bar scene unlike anywhere in Europe."
+      "description": "Baroque thermal baths, Danube bridge views and a ruin bar scene unlike anywhere in Europe.",
+      "price_twin": 226,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "city-008",
@@ -138,7 +173,12 @@
         "Denmark",
         "Nordic"
       ],
-      "description": "Nyhavn's coloured townhouses, new Nordic food and a cycle-friendly city built for wandering."
+      "description": "Nyhavn's coloured townhouses, new Nordic food and a cycle-friendly city built for wandering.",
+      "price_twin": 328,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "city-009",
@@ -154,7 +194,12 @@
       "tags": [
         "Ireland"
       ],
-      "description": "Georgian squares, the Book of Kells and a pub session that turns into an accidental late night."
+      "description": "Georgian squares, the Book of Kells and a pub session that turns into an accidental late night.",
+      "price_twin": 358,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "city-010",
@@ -171,7 +216,12 @@
         "Germany",
         "Rhine"
       ],
-      "description": "Rhine promenades, the Altstadt old town and one of Germany's most underrated food scenes."
+      "description": "Rhine promenades, the Altstadt old town and one of Germany's most underrated food scenes.",
+      "price_twin": 249,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "city-011",
@@ -188,7 +238,12 @@
         "Scotland",
         "Castle"
       ],
-      "description": "Castle ramparts, the Royal Mile's medieval closes and whisky tastings in a city built on volcanic rock."
+      "description": "Castle ramparts, the Royal Mile's medieval closes and whisky tastings in a city built on volcanic rock.",
+      "price_twin": 348,
+      "currency": "£",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "city-012",
@@ -206,7 +261,12 @@
         "Tuscany",
         "Renaissance"
       ],
-      "description": "Michelangelo's David, Renaissance frescoes and bistecca Fiorentina on the Arno riverbanks."
+      "description": "Michelangelo's David, Renaissance frescoes and bistecca Fiorentina on the Arno riverbanks.",
+      "price_twin": 375,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "city-013",
@@ -223,7 +283,12 @@
         "Germany",
         "Financial Hub"
       ],
-      "description": "Medieval R\u00f6merberg, modern skyline and apple wine in a Sachsenhausen cider tavern."
+      "description": "Medieval Römerberg, modern skyline and apple wine in a Sachsenhausen cider tavern.",
+      "price_twin": 266,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "city-014",
@@ -240,7 +305,12 @@
         "Switzerland",
         "Lake Geneva"
       ],
-      "description": "The Jet d'Eau, Lake Geneva promenades and Swiss watchmaking in an unexpectedly compact city."
+      "description": "The Jet d'Eau, Lake Geneva promenades and Swiss watchmaking in an unexpectedly compact city.",
+      "price_twin": 376,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "city-015",
@@ -256,7 +326,12 @@
       "tags": [
         "Scotland"
       ],
-      "description": "Mackintosh architecture, the Kelvingrove museum and the warmest welcome in any British city."
+      "description": "Mackintosh architecture, the Kelvingrove museum and the warmest welcome in any British city.",
+      "price_twin": 203,
+      "currency": "£",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "city-016",
@@ -273,7 +348,12 @@
         "Finland",
         "Nordic"
       ],
-      "description": "Market Square herring, island fortress views and a public sauna ritual on the harbour edge."
+      "description": "Market Square herring, island fortress views and a public sauna ritual on the harbour edge.",
+      "price_twin": 255,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "city-017",
@@ -290,7 +370,12 @@
         "Austria",
         "Alps"
       ],
-      "description": "Habsburg Golden Roof, Swarovski crystal worlds and Alpine panoramas from the Nordkette cable car."
+      "description": "Habsburg Golden Roof, Swarovski crystal worlds and Alpine panoramas from the Nordkette cable car.",
+      "price_twin": 340,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "city-018",
@@ -308,7 +393,12 @@
         "Alps",
         "Jungfrau"
       ],
-      "description": "Two lakes, the Jungfrau railway and an Eiger north face that fills the entire horizon."
+      "description": "Two lakes, the Jungfrau railway and an Eiger north face that fills the entire horizon.",
+      "price_twin": 393,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "city-019",
@@ -326,7 +416,12 @@
         "Scottish Highlands",
         "Loch Ness"
       ],
-      "description": "Loch Ness monster hunts, Highland castle ruins and whisky distillery visits in the northern capital."
+      "description": "Loch Ness monster hunts, Highland castle ruins and whisky distillery visits in the northern capital.",
+      "price_twin": 263,
+      "currency": "£",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "city-020",
@@ -343,7 +438,12 @@
         "Portugal",
         "Atlantic"
       ],
-      "description": "Fado in the Alfama, vintage tram rattles and pastel de nata with Atlantic views."
+      "description": "Fado in the Alfama, vintage tram rattles and pastel de nata with Atlantic views.",
+      "price_twin": 252,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "city-021",
@@ -361,7 +461,12 @@
         "Thames",
         "Royal"
       ],
-      "description": "Tower of London, Thames cruise, Borough Market and the sheer scale of a city that never runs out."
+      "description": "Tower of London, Thames cruise, Borough Market and the sheer scale of a city that never runs out.",
+      "price_twin": 347,
+      "currency": "£",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "city-022",
@@ -379,7 +484,12 @@
         "Alps",
         "Lake"
       ],
-      "description": "Chapel Bridge reflections, Mount Titlis snow and a lake framed by peaks on every side."
+      "description": "Chapel Bridge reflections, Mount Titlis snow and a lake framed by peaks on every side.",
+      "price_twin": 207,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "city-023",
@@ -396,7 +506,12 @@
         "Spain",
         "Museums"
       ],
-      "description": "Prado masterpieces, Retiro Park Sunday mornings and a tapas crawl through La Latina."
+      "description": "Prado masterpieces, Retiro Park Sunday mornings and a tapas crawl through La Latina.",
+      "price_twin": 288,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "city-024",
@@ -414,7 +529,12 @@
         "Fashion",
         "Duomo"
       ],
-      "description": "The Duomo rooftop, Da Vinci's Last Supper and aperitivo hour in the Navigli canal district."
+      "description": "The Duomo rooftop, Da Vinci's Last Supper and aperitivo hour in the Navigli canal district.",
+      "price_twin": 318,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "city-025",
@@ -432,7 +552,12 @@
         "Bavaria",
         "Beer"
       ],
-      "description": "Marienplatz glockenspiel, BMW museum and a Biergarten under the chestnut trees."
+      "description": "Marienplatz glockenspiel, BMW museum and a Biergarten under the chestnut trees.",
+      "price_twin": 331,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "city-026",
@@ -450,7 +575,12 @@
         "Islands",
         "Beaches"
       ],
-      "description": "Whitewashed windmills, Aegean beach clubs and the Little Venice waterfront at sunset."
+      "description": "Whitewashed windmills, Aegean beach clubs and the Little Venice waterfront at sunset.",
+      "price_twin": 330,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "city-027",
@@ -468,7 +598,12 @@
         "French Riviera",
         "Mediterranean"
       ],
-      "description": "Promenade des Anglais, Cours Saleya flower market and a day trip to Monaco's casino square."
+      "description": "Promenade des Anglais, Cours Saleya flower market and a day trip to Monaco's casino square.",
+      "price_twin": 394,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "city-028",
@@ -486,7 +621,12 @@
         "Nordic",
         "Fjords"
       ],
-      "description": "Viking ships, the Vigeland sculpture park and Aker Brygge waterfront with fjord views."
+      "description": "Viking ships, the Vigeland sculpture park and Aker Brygge waterfront with fjord views.",
+      "price_twin": 561,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "city-029",
@@ -504,7 +644,12 @@
         "Seine",
         "Eiffel Tower"
       ],
-      "description": "Eiffel Tower second floor, Seine cruise past Notre-Dame and Montmartre at golden hour."
+      "description": "Eiffel Tower second floor, Seine cruise past Notre-Dame and Montmartre at golden hour.",
+      "price_twin": 454,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "city-030",
@@ -521,7 +666,12 @@
         "Czech Republic",
         "Historic"
       ],
-      "description": "Charles Bridge at dawn, Bohemian crystal cellars and the best beer in Central Europe."
+      "description": "Charles Bridge at dawn, Bohemian crystal cellars and the best beer in Central Europe.",
+      "price_twin": 311,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "city-031",
@@ -540,7 +690,12 @@
         "Colosseum",
         "Vatican"
       ],
-      "description": "Colosseum, Vatican Museums, Trevi Fountain and gelato in a city where every cobblestone has history."
+      "description": "Colosseum, Vatican Museums, Trevi Fountain and gelato in a city where every cobblestone has history.",
+      "price_twin": 207,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "city-032",
@@ -558,7 +713,12 @@
         "Mozart",
         "Alps"
       ],
-      "description": "Mozart's birthplace, Hohensalzburg fortress and Sound of Music locations in a baroque Alpine city."
+      "description": "Mozart's birthplace, Hohensalzburg fortress and Sound of Music locations in a baroque Alpine city.",
+      "price_twin": 393,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "city-033",
@@ -577,7 +737,12 @@
         "Beaches",
         "Sunset"
       ],
-      "description": "Blue-domed churches, caldera sunsets and volcanic black sand beaches on Greece's most dramatic island."
+      "description": "Blue-domed churches, caldera sunsets and volcanic black sand beaches on Greece's most dramatic island.",
+      "price_twin": 411,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "city-034",
@@ -594,7 +759,12 @@
         "Sweden",
         "Nordic"
       ],
-      "description": "Gamla Stan medieval island, the Vasa warship museum and archipelago views from Djurg\u00e5rden."
+      "description": "Gamla Stan medieval island, the Vasa warship museum and archipelago views from Djurgården.",
+      "price_twin": 512,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "city-035",
@@ -612,7 +782,12 @@
         "Canals",
         "Gondola"
       ],
-      "description": "Grand Canal vaporetto rides, St Mark's mosaics and a gondola through the back canals at dusk."
+      "description": "Grand Canal vaporetto rides, St Mark's mosaics and a gondola through the back canals at dusk.",
+      "price_twin": 672,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "city-036",
@@ -630,7 +805,12 @@
         "Classical Music",
         "Danube"
       ],
-      "description": "Sch\u00f6nbrunn Palace, coffeehouse culture and Strauss waltzes in a city frozen in imperial grandeur."
+      "description": "Schönbrunn Palace, coffeehouse culture and Strauss waltzes in a city frozen in imperial grandeur.",
+      "price_twin": 355,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "city-037",
@@ -648,7 +828,12 @@
         "Lake",
         "Banking"
       ],
-      "description": "Lake Zurich promenades, Bahnhofstrasse shopping and a day trip to the Rhine Falls."
+      "description": "Lake Zurich promenades, Bahnhofstrasse shopping and a day trip to the Rhine Falls.",
+      "price_twin": 571,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "italy-003",
@@ -671,7 +856,12 @@
         "Amalfi Coast",
         "Canals"
       ],
-      "description": "Private guided tour through Naples, Rome, Florence, Venice Mestre, Venice and Milan."
+      "description": "Private guided tour through Naples, Rome, Florence, Venice Mestre, Venice and Milan.",
+      "price_twin": 1382,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "italy-004",
@@ -694,7 +884,12 @@
         "Amalfi Coast",
         "Canals"
       ],
-      "description": "Trains, landmarks and local character through Rome, Naples, Venice and Milan."
+      "description": "Trains, landmarks and local character through Rome, Naples, Venice and Milan.",
+      "price_twin": 1287,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "italy-001",
@@ -714,7 +909,12 @@
         "Tuscany",
         "Canals"
       ],
-      "description": "Private guided tour: Venice canals, Florentine frescoes and Roman ruins with a dedicated vehicle."
+      "description": "Private guided tour: Venice canals, Florentine frescoes and Roman ruins with a dedicated vehicle.",
+      "price_twin": 833,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "italy-002",
@@ -734,7 +934,12 @@
         "Tuscany",
         "Canals"
       ],
-      "description": "Venice walking tour, a full-day Tuscany excursion and the Colosseum by train."
+      "description": "Venice walking tour, a full-day Tuscany excursion and the Colosseum by train.",
+      "price_twin": 767,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "7-nights--8-days-sardinia-self",
@@ -755,7 +960,12 @@
         "Italy",
         "Self Drive"
       ],
-      "description": "Sardinia's wild east coast, the Gulf of Orosei's sea caves, Alghero's Spanish old town and the Costa Smeralda."
+      "description": "Sardinia's wild east coast, the Gulf of Orosei's sea caves, Alghero's Spanish old town and the Costa Smeralda.",
+      "price_twin": 935,
+      "currency": "€",
+      "valid_till": "Oct 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "ee-001",
@@ -776,7 +986,12 @@
         "Hungary",
         "Danube"
       ],
-      "description": "Private guided tour through Prague, Vienna and Budapest."
+      "description": "Private guided tour through Prague, Vienna and Budapest.",
+      "price_twin": 683,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "ee-002",
@@ -797,7 +1012,12 @@
         "Hungary",
         "Danube"
       ],
-      "description": "Gothic Prague, imperial Vienna and thermal Budapest by train in six nights."
+      "description": "Gothic Prague, imperial Vienna and thermal Budapest by train in six nights.",
+      "price_twin": 701,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "7-nights--8-days-france-privat",
@@ -817,7 +1037,12 @@
         "Normandy",
         "Loire Valley"
       ],
-      "description": "D-Day beaches, Mont Saint-Michel and Loire Valley ch\u00e2teaux on a private Normandy and Loire circuit."
+      "description": "D-Day beaches, Mont Saint-Michel and Loire Valley châteaux on a private Normandy and Loire circuit.",
+      "price_twin": 1197,
+      "currency": "€",
+      "valid_till": "Oct 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "7-nights--8-days-france-regula",
@@ -837,7 +1062,12 @@
         "Normandy",
         "Loire Valley"
       ],
-      "description": "D-Day beaches, Mont Saint-Michel and Loire Valley ch\u00e2teaux by train from Paris."
+      "description": "D-Day beaches, Mont Saint-Michel and Loire Valley châteaux by train from Paris.",
+      "price_twin": 938,
+      "currency": "€",
+      "valid_till": "Oct 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "7-nights--8-days-france-self-d",
@@ -858,7 +1088,12 @@
         "Loire Valley",
         "Self Drive"
       ],
-      "description": "D-Day beaches, \u00c9tretat cliffs and Loire Valley ch\u00e2teaux on a self-drive from Paris."
+      "description": "D-Day beaches, Étretat cliffs and Loire Valley châteaux on a self-drive from Paris.",
+      "price_twin": 933,
+      "currency": "€",
+      "valid_till": "Oct 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "8-nights--9-days-corsica-self-",
@@ -878,7 +1113,12 @@
         "France",
         "Self Drive"
       ],
-      "description": "Corsica's dramatic interior \u2014 the Calanques de Piana, Spelunca gorge and the white limestone cliffs of Bonifacio."
+      "description": "Corsica's dramatic interior — the Calanques de Piana, Spelunca gorge and the white limestone cliffs of Bonifacio.",
+      "price_twin": 1084,
+      "currency": "€",
+      "valid_till": "Oct 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "8-nights--9-days-france-privat",
@@ -899,7 +1139,12 @@
         "Provence",
         "French Riviera"
       ],
-      "description": "Paris, papal Avignon, Luberon lavender villages and Monaco on a private Provence and Riviera circuit."
+      "description": "Paris, papal Avignon, Luberon lavender villages and Monaco on a private Provence and Riviera circuit.",
+      "price_twin": 1428,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "8-nights--9-days-france-regula",
@@ -920,7 +1165,12 @@
         "Provence",
         "French Riviera"
       ],
-      "description": "Paris to the Riviera \u2014 papal Avignon, Provence hilltowns and Monaco by train."
+      "description": "Paris to the Riviera — papal Avignon, Provence hilltowns and Monaco by train.",
+      "price_twin": 1098,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "8-nights--9-days-france-self-d",
@@ -942,7 +1192,12 @@
         "Riviera",
         "Self Drive"
       ],
-      "description": "Paris to Nice by self-drive \u2014 Pont du Gard, Luberon villages, St Tropez and Monaco at your own pace."
+      "description": "Paris to Nice by self-drive — Pont du Gard, Luberon villages, St Tropez and Monaco at your own pace.",
+      "price_twin": 1301,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "6-nights--7-days-nordic-capita",
@@ -965,7 +1220,12 @@
         "Helsinki",
         "Nordic"
       ],
-      "description": "Four Nordic capitals by ferry and train \u2014 design, open-faced sandwiches and the Vigeland sculpture park."
+      "description": "Four Nordic capitals by ferry and train — design, open-faced sandwiches and the Vigeland sculpture park.",
+      "price_twin": 1017,
+      "currency": "€",
+      "valid_till": "Mar 2027",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "iceland-self-drive-7-nights--8",
@@ -986,7 +1246,12 @@
         "Self Drive",
         "Ring Road"
       ],
-      "description": "Iceland's complete ring road \u2014 geysers, glacier lagoons, black beaches and the midnight sun."
+      "description": "Iceland's complete ring road — geysers, glacier lagoons, black beaches and the midnight sun.",
+      "price_twin": 1771,
+      "currency": "€",
+      "valid_till": "Oct 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "kiruna-4n-regular-winter",
@@ -1001,10 +1266,10 @@
       "type": "Regular",
       "season": "winter",
       "price_twin": 1351,
-      "currency": "\u20ac",
+      "currency": "€",
       "valid_till": "Mar 2027",
       "is_expired": false,
-      "description": "Dog sledding, the ICEHOTEL at Jukkasj\u00e4rvi, a snowmobile wildlife safari and a Northern Lights chase in the deep Arctic.",
+      "description": "Dog sledding, the ICEHOTEL at Jukkasjärvi, a snowmobile wildlife safari and a Northern Lights chase in the deep Arctic.",
       "tags": [
         "Kiruna",
         "Sweden",
@@ -1030,7 +1295,12 @@
         "Norway",
         "Fjords"
       ],
-      "description": "Oslo's fjord waterfront, the Fl\u00e5m Railway and Bergen's colourful Bryggen wharf."
+      "description": "Oslo's fjord waterfront, the Flåm Railway and Bergen's colourful Bryggen wharf.",
+      "price_twin": 990,
+      "currency": "€",
+      "valid_till": "Mar 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "rovaniemi-4n-regular-winter",
@@ -1045,7 +1315,7 @@
       "type": "Regular",
       "season": "winter",
       "price_twin": 1188,
-      "currency": "\u20ac",
+      "currency": "€",
       "valid_till": "Mar 2027",
       "is_expired": false,
       "description": "Reindeer farm safari, husky experience and a guaranteed Northern Lights excursion from Santa's Arctic hometown.",
@@ -1071,10 +1341,10 @@
       "type": "Regular",
       "season": "winter",
       "price_twin": 2087,
-      "currency": "\u20ac",
+      "currency": "€",
       "valid_till": "Mar 2027",
       "is_expired": false,
-      "description": "Four days in Kiruna \u2014 dog sleds, ICEHOTEL, snowmobiles \u2014 then three nights at Abisko's Aurora Sky Station.",
+      "description": "Four days in Kiruna — dog sleds, ICEHOTEL, snowmobiles — then three nights at Abisko's Aurora Sky Station.",
       "tags": [
         "Kiruna",
         "Abisko",
@@ -1085,23 +1355,23 @@
     },
     {
       "id": "tromso-4n-regular-winter",
-      "name": "Troms\u00f8 Winter 4 nights / 5 days",
+      "name": "Tromsø Winter 4 nights / 5 days",
       "filename": "Tromso 4N_Regular Winter.pdf",
       "region": "Scandinavia & Iceland",
       "folder": "multi-country/scandinavia-iceland",
       "cities": [
-        "Troms\u00f8"
+        "Tromsø"
       ],
       "duration": "4 nights / 5 days",
       "type": "Regular",
       "season": "winter",
       "price_twin": 1726,
-      "currency": "\u20ac",
+      "currency": "€",
       "valid_till": "Mar 2027",
       "is_expired": false,
-      "description": "Northern Lights cruise, S\u00e1mi reindeer camp dinner, Lyngen Alps snowmobile safari and a polar whale watching expedition.",
+      "description": "Northern Lights cruise, Sámi reindeer camp dinner, Lyngen Alps snowmobile safari and a polar whale watching expedition.",
       "tags": [
-        "Troms\u00f8",
+        "Tromsø",
         "Norway",
         "Northern Lights",
         "Winter",
@@ -1110,28 +1380,28 @@
     },
     {
       "id": "tromso-7n-regular-winter",
-      "name": "Troms\u00f8 Winter 7 nights / 8 days",
+      "name": "Tromsø Winter 7 nights / 8 days",
       "filename": "Tromso 7N_Regular Winter.pdf",
       "region": "Scandinavia & Iceland",
       "folder": "multi-country/scandinavia-iceland",
       "cities": [
-        "Troms\u00f8"
+        "Tromsø"
       ],
       "duration": "7 nights / 8 days",
       "type": "Regular",
       "season": "winter",
       "price_twin": 2599,
-      "currency": "\u20ac",
+      "currency": "€",
       "valid_till": "Mar 2027",
       "is_expired": false,
-      "description": "Seven nights of Arctic immersion \u2014 whale watching, snowmobiles, reindeer sledding, Aurora cruises and a coastal fjord safari.",
+      "description": "Seven nights of Arctic immersion — whale watching, snowmobiles, reindeer sledding, Aurora cruises and a coastal fjord safari.",
       "tags": [
-        "Troms\u00f8",
+        "Tromsø",
         "Norway",
         "Northern Lights",
         "Winter",
         "Whale Watching",
-        "S\u00e1mi Culture"
+        "Sámi Culture"
       ]
     },
     {
@@ -1151,7 +1421,12 @@
         "Barcelona",
         "Spain"
       ],
-      "description": "Royal palaces, Sagrada Fam\u00edlia and Montserrat on a private Madrid to Barcelona circuit."
+      "description": "Royal palaces, Sagrada Família and Montserrat on a private Madrid to Barcelona circuit.",
+      "price_twin": 884,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "8-nights--9-days-spain-private",
@@ -1173,7 +1448,12 @@
         "Seville",
         "Barcelona"
       ],
-      "description": "Private guided Spain: Alhambra gardens, Seville flamenco, Toledo detour and Gaud\u00ed in Barcelona."
+      "description": "Private guided Spain: Alhambra gardens, Seville flamenco, Toledo detour and Gaudí in Barcelona.",
+      "price_twin": 1879,
+      "currency": "€",
+      "valid_till": "Oct 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "8-nights--9-days-spain-regular",
@@ -1195,7 +1475,12 @@
         "Seville",
         "Barcelona"
       ],
-      "description": "Alhambra gardens, Seville's Royal Alc\u00e1zar and Gaud\u00ed's Barcelona by high-speed train."
+      "description": "Alhambra gardens, Seville's Royal Alcázar and Gaudí's Barcelona by high-speed train.",
+      "price_twin": 1400,
+      "currency": "€",
+      "valid_till": "Oct 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "switz-001",
@@ -1215,7 +1500,12 @@
         "Alps",
         "Jungfrau"
       ],
-      "description": "Mount Titlis, the Jungfrau region and Rhine Falls on a Swiss Travel Pass loop."
+      "description": "Mount Titlis, the Jungfrau region and Rhine Falls on a Swiss Travel Pass loop.",
+      "price_twin": 827,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "switz-002",
@@ -1237,7 +1527,12 @@
         "Jungfrau",
         "Lake Geneva"
       ],
-      "description": "Private guided Switzerland: Titlis, Interlaken paragliding views, Montreux jazz lakeside and Zurich."
+      "description": "Private guided Switzerland: Titlis, Interlaken paragliding views, Montreux jazz lakeside and Zurich.",
+      "price_twin": 1236,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "switz-003",
@@ -1259,7 +1554,12 @@
         "Jungfrau",
         "Lake Geneva"
       ],
-      "description": "Seven nights on the Swiss Travel Pass \u2014 Titlis, Jungfrau, Lake Geneva and Broc chocolate factory."
+      "description": "Seven nights on the Swiss Travel Pass — Titlis, Jungfrau, Lake Geneva and Broc chocolate factory.",
+      "price_twin": 1066,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "uk-002",
@@ -1281,7 +1581,12 @@
         "Scotland",
         "Scottish Highlands"
       ],
-      "description": "London to Glasgow via the Peak District, Edinburgh's old town, Loch Ness and the Isle of Skye."
+      "description": "London to Glasgow via the Peak District, Edinburgh's old town, Loch Ness and the Isle of Skye.",
+      "price_twin": 1675,
+      "currency": "£",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "uk-001",
@@ -1299,7 +1604,12 @@
         "City Break",
         "Thames"
       ],
-      "description": "Private London \u2014 panoramic city tour, Thames cruise, Stonehenge and Bath with a dedicated vehicle."
+      "description": "Private London — panoramic city tour, Thames cruise, Stonehenge and Bath with a dedicated vehicle.",
+      "price_twin": 513,
+      "currency": "£",
+      "valid_till": "Oct 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "uk-010",
@@ -1316,7 +1626,12 @@
       "tags": [
         "Ireland"
       ],
-      "description": "Private Ireland: Dublin's Georgian streets, Cliffs of Moher, Killarney and the Burren by minivan."
+      "description": "Private Ireland: Dublin's Georgian streets, Cliffs of Moher, Killarney and the Burren by minivan.",
+      "price_twin": 1062,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "uk-009",
@@ -1333,7 +1648,12 @@
       "tags": [
         "Ireland"
       ],
-      "description": "Dublin Hop-On Hop-Off, Cliffs of Moher tour and a train loop through the west of Ireland."
+      "description": "Dublin Hop-On Hop-Off, Cliffs of Moher tour and a train loop through the west of Ireland.",
+      "price_twin": 778,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "uk-008",
@@ -1351,7 +1671,12 @@
         "Ireland",
         "Self Drive"
       ],
-      "description": "Self-drive Ireland: Cliffs of Moher, the Burren, Killarney and the Ring of Kerry at your own pace."
+      "description": "Self-drive Ireland: Cliffs of Moher, the Burren, Killarney and the Ring of Kerry at your own pace.",
+      "price_twin": 875,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "uk-007",
@@ -1371,7 +1696,12 @@
         "Scotland",
         "Scottish Highlands"
       ],
-      "description": "Private Scotland: Edinburgh Castle, Loch Ness, the Isle of Skye and Loch Lomond with a dedicated vehicle."
+      "description": "Private Scotland: Edinburgh Castle, Loch Ness, the Isle of Skye and Loch Lomond with a dedicated vehicle.",
+      "price_twin": 1058,
+      "currency": "£",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "uk-006",
@@ -1391,7 +1721,12 @@
         "Scotland",
         "Scottish Highlands"
       ],
-      "description": "Edinburgh to Glasgow by train via Inverness, the Isle of Skye and the Highlands."
+      "description": "Edinburgh to Glasgow by train via Inverness, the Isle of Skye and the Highlands.",
+      "price_twin": 768,
+      "currency": "£",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "uk-005",
@@ -1412,7 +1747,12 @@
         "Scottish Highlands",
         "Self Drive"
       ],
-      "description": "Self-drive Scotland: Edinburgh, Loch Ness, the Isle of Skye and Loch Lomond at your own pace."
+      "description": "Self-drive Scotland: Edinburgh, Loch Ness, the Isle of Skye and Loch Lomond at your own pace.",
+      "price_twin": 766,
+      "currency": "£",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "uk-004",
@@ -1433,7 +1773,12 @@
         "Scotland",
         "Scottish Highlands"
       ],
-      "description": "London to Edinburgh by train via Glasgow, Loch Ness and the Highlands."
+      "description": "London to Edinburgh by train via Glasgow, Loch Ness and the Highlands.",
+      "price_twin": 991,
+      "currency": "£",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "uk-003",
@@ -1455,7 +1800,12 @@
         "Scotland",
         "Scottish Highlands"
       ],
-      "description": "Private Britain: London, Peak District, Edinburgh, Isle of Skye and Loch Lomond with a dedicated vehicle."
+      "description": "Private Britain: London, Peak District, Edinburgh, Isle of Skye and Loch Lomond with a dedicated vehicle.",
+      "price_twin": 1984,
+      "currency": "£",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "9-nights--10-days-cotswolds-de",
@@ -1480,7 +1830,12 @@
         "Devon",
         "Self Drive"
       ],
-      "description": "England's secret southwest \u2014 Tintagel, Land's End, the Jurassic Coast, Stonehenge and Windsor on one circuit."
+      "description": "England's secret southwest — Tintagel, Land's End, the Jurassic Coast, Stonehenge and Windsor on one circuit.",
+      "price_twin": 1221,
+      "currency": "£",
+      "valid_till": "Oct 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "wce-005",
@@ -1504,7 +1859,12 @@
         "Alps",
         "Tuscany"
       ],
-      "description": "Private grand tour: Paris, Swiss Alps, Venice canals, Florentine frescoes and the Colosseum."
+      "description": "Private grand tour: Paris, Swiss Alps, Venice canals, Florentine frescoes and the Colosseum.",
+      "price_twin": 1653,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "wce-006",
@@ -1528,7 +1888,12 @@
         "Alps",
         "Tuscany"
       ],
-      "description": "Eiffel Tower, Mount Titlis, Venice gondolas and the Colosseum on a twelve-night grand tour by train."
+      "description": "Eiffel Tower, Mount Titlis, Venice gondolas and the Colosseum on a twelve-night grand tour by train.",
+      "price_twin": 1791,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "wce-001",
@@ -1549,7 +1914,12 @@
         "Alps",
         "Seine"
       ],
-      "description": "Private Paris and Switzerland: Eiffel Tower, Seine cruise, Titlis cable car and the Rhine Falls."
+      "description": "Private Paris and Switzerland: Eiffel Tower, Seine cruise, Titlis cable car and the Rhine Falls.",
+      "price_twin": 1261,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "wce-002",
@@ -1570,7 +1940,12 @@
         "Alps",
         "Seine"
       ],
-      "description": "Paris city tour with Seine cruise, then Titlis, Lake Lucerne and the Rhine Falls by rail."
+      "description": "Paris city tour with Seine cruise, then Titlis, Lake Lucerne and the Rhine Falls by rail.",
+      "price_twin": 1455,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "wce-008",
@@ -1593,7 +1968,12 @@
         "Alps",
         "Canals"
       ],
-      "description": "Private: Amsterdam windmills, Paris Seine cruise, Swiss Alps and the Rhine Falls with a dedicated vehicle."
+      "description": "Private: Amsterdam windmills, Paris Seine cruise, Swiss Alps and the Rhine Falls with a dedicated vehicle.",
+      "price_twin": 1364,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "wce-007",
@@ -1616,7 +1996,12 @@
         "Alps",
         "Canals"
       ],
-      "description": "Amsterdam canal tour, Paris city tour and Titlis on a four-country rail journey."
+      "description": "Amsterdam canal tour, Paris city tour and Titlis on a four-country rail journey.",
+      "price_twin": 1499,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "wce-003",
@@ -1639,7 +2024,12 @@
         "Alps",
         "Danube"
       ],
-      "description": "Paris, Swiss Alps, Swarovski Crystal Worlds and Vienna's Sch\u00f6nbrunn on a private nine-night arc."
+      "description": "Paris, Swiss Alps, Swarovski Crystal Worlds and Vienna's Schönbrunn on a private nine-night arc.",
+      "price_twin": 1419,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     },
     {
       "id": "wce-004",
@@ -1662,7 +2052,12 @@
         "Alps",
         "Danube"
       ],
-      "description": "Paris to Vienna by rail \u2014 Titlis, Swarovski crystal worlds and a Sch\u00f6nbrunn Palace city tour."
+      "description": "Paris to Vienna by rail — Titlis, Swarovski crystal worlds and a Schönbrunn Palace city tour.",
+      "price_twin": 1675,
+      "currency": "€",
+      "valid_till": "Nov 2026",
+      "is_expired": false,
+      "season": "all-year"
     }
   ]
 }

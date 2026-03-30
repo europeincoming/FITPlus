@@ -46,7 +46,6 @@ footer{text-align:center;margin-top:60px;padding:32px 0;color:#9e9e9e;font-size:
 .card-description{font-size:0.81em;color:#666;font-style:italic;line-height:1.4;}
 .cities-list{font-size:0.79em;color:#555;}
 .price-tag{font-size:0.88em;color:#2e7d32;font-weight:700;margin-top:auto;padding-top:6px;}
-
 .card-map{width:200px;min-width:200px;border-left:1px solid #ebebeb;position:relative;overflow:hidden;}
 .map-inner{width:100%;height:100%;min-height:210px;}
 .leaflet-tooltip.city-tip{background:transparent!important;border:none!important;box-shadow:none!important;font-size:9px;font-weight:700;color:#1a1a2e;white-space:nowrap;padding:0;text-shadow:-1px -1px 0 white,1px -1px 0 white,-1px 1px 0 white,1px 1px 0 white;}
@@ -114,7 +113,7 @@ if(['US','CA','AU','NZ'].includes(d.country)){document.body.innerHTML='<div styl
     <div class="tour-type">Self Drive</div>
     <div class="card-pills"><span class="pill pill-duration">🕐 8 nights / 9 days</span><span class="pill pill-allyear">🌍 All Year Round</span><span class="pill pill-valid">✓ Valid till Oct 2026</span></div>
     <div class="card-description">Corsica's dramatic interior — the Calanques de Piana, Spelunca gorge and the white limestone cliffs of Bonifacio.</div>
-    <div class="cities-list">📍 Ajaccio · Corte · Bonifacio</div>
+    <div class="cities-list">📍 Ajaccio · Porto-Ota · Corte · Bonifacio</div>
     <div class="price-tag">From €1,084 pp (twin)</div>
   </div>
   <div class="card-map"><div id="map_8_nights__9_days_c_3" class="map-inner"></div></div>
@@ -205,7 +204,7 @@ if(['US','CA','AU','NZ'].includes(d.country)){document.body.innerHTML='<div styl
   });
 })();
 (function(){
-  var pts=[[41.9192, 8.7386, "Ajaccio"], [42.3069, 9.1497, "Corte"], [41.3871, 9.1597, "Bonifacio"]];
+  var pts=[[41.9192, 8.7386, "Ajaccio"], [42.2667, 8.6333, "Porto-Ota"], [42.3069, 9.1497, "Corte"], [41.3871, 9.1597, "Bonifacio"]];
   if(!pts.length) return;
   var lats=pts.map(function(p){return p[0];});
   var lngs=pts.map(function(p){return p[1];});
